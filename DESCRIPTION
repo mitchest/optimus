@@ -27,3 +27,4 @@ BugReports: https://github.com/mitchest/optimus/issues
 License: GPL-3
 LazyData: TRUE
 RoxygenNote: 5.0.1
+Suggests: testthat
