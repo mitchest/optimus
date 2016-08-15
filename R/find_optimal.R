@@ -37,7 +37,7 @@
 #'
 #' @references Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 #'
-#' @seealso S3 plotting function, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
+#' @seealso \code{\link[optimus]{plot.aicsums}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
 #'
 #' @keywords optimal
 #'
