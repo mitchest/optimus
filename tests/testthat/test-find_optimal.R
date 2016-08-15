@@ -24,11 +24,11 @@ counts_list <- lapply(2:10, FUN = function(x, data){cutree(tree = data, k = x)},
 
 
 ## count tests
-counts_optimal <- find_optimal(data = counts, clustering = counts_cutree, family = "poisson", cutreeLevels = cutreeLevels)
+counts_optimal <- optimus::find_optimal(data = counts, clustering = counts_cutree, family = "poisson", cutreeLevels = cutreeLevels)
 
-test_that("find_optimal() returns a data frame", {
-  expect_equal(class(counts_optimal), "aicsums")
-  expect_equal(class(counts_optimal), "data.frame")
+test_that("find_optimal() returns correct class", {
+  expect_equal(class(counts_optimal)[1], "aicsums")
+  expect_equal(class(counts_optimal)[2], "data.frame")
 })
 
 test_that("find_optimal() returns correct number of rows and columns", {
@@ -37,5 +37,5 @@ test_that("find_optimal() returns correct number of rows and columns", {
 })
 
 test_that("find_optimal() returns correctly named columns", {
-  expect_equal(names(counts_optimal) %in% c("sum_aic", "nclusters"), TRUE)
+  expect_equal(all(names(counts_optimal) %in% c("sum_aic", "nclusters")), TRUE)
 })
