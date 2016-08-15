@@ -70,7 +70,7 @@ find_optimal <- function(data, clustering, family, cutree = TRUE, cutreeLevels =
   cutree_to_list <- function(x, clustering) {cutree(tree = clustering, k = x)}
   cluster_list <- lapply(X = as.list(cutreeLevels), FUN = cutree_to_list, clustering = clustering)
 
-  # if a list was supplied, cutreeLevels will be generated automatically from the number of unique levels in each component (via unique())
+  # if cutree = F; make cluster_list and cutreeLevels via unique()
 
   # fit models to calculate sum-of-aic
   if (family == "gaussian") {
