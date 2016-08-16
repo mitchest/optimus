@@ -17,4 +17,6 @@
 
 plot.aicsums <- function(x, ...) {
   plot(x$sum_aic ~ x$nclusters)
+
+  invisible()
 }
