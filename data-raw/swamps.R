@@ -1,4 +1,5 @@
 library(tidyr)
+library(dplyr)
 
 # access .csv from:
 # http://www.ltern.org.au/knb/metacat?action=read&qformat=html&docid=ltern.84.15
