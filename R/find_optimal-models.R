@@ -27,7 +27,8 @@ poisson_loop <- function(cluster_list, data) {
 # binomal glms (K=1 for logistic regression) via mvabund
 binomial_loop <- function(cluster_list, data, K) {
   data <- mvabund::mvabund(data)
-  sum_aic <- function(x, data) {mvabund::manyglm(formula = data ~ as.factor(x), family = "binomial", K=K)$AICsum}
+  # possibly change logistic regression to link='cloglog', but for the meantime use logit link
+  sum_aic <- function(x, data) {mvabund::manyglm(formula = data ~ as.factor(x), family = binomial(link="logit"), K=K)$AICsum}
   unlist(lapply(X = cluster_list, FUN = sum_aic, data = data))
 }
 
