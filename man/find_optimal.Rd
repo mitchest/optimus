@@ -68,7 +68,7 @@ swamps_clust_aics <- find_optimal(data = swamps, clustering = swamps_clust, fami
 
 ## plot - the lowest values wins it
 ## Poisson is probably not the right choice for this data set though, since data are frequency counts
-plot(swamps_flexB_aics)
+plot(swamps_clust_aics)
 
 ## Let's try binomial regression instead, since data are frequency counts
 swamps_prop <- swamps / 30 # convert to proportion
@@ -79,7 +79,7 @@ swamps_prop <- swamps / 30 # convert to proportion
 swamps_clust_aics <- find_optimal(data = swamps_prop, clustering = swamps_clust, family = "binomial", K=30, cutreeLevels = 2:40)
 
 ## plot - the lowest values wins it
-plot(swamps_flexB_aics)
+plot(swamps_clust_aics)
 
 
 2) supplying a list of clustering solutions, from kmeans and from cutree(h=)
