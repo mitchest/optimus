@@ -38,7 +38,8 @@ from github. Simply install **devtools** from CRAN with
 
 then call
 
-    devtools::install_github("mitchest/optimus")
+    library(devtools)
+	devtools::install_github("mitchest/optimus")
 
 	
 ### Contact
