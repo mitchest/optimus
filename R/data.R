@@ -4,7 +4,7 @@
 #'
 #' @format A data frame with 54 rows and 171 variables:
 #' \describe{
-#'   \item{transect}{transect identifyer, that is, the name of the site (0.5 x 0.5 m quadrats)}
+#'   \item{transect (first column)}{transect identifyer, that is, the name of the site (0.5 x 0.5 m quadrats)}
 #'   \item{remaining columns}{frequency counts (out of 30) for all vascular plant taxa; taxonomy in metadata link below}
 #'   ...
 #' }
