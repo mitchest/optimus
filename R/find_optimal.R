@@ -66,7 +66,7 @@ find_optimal <- function(data, clustering, family, K = 1, cutree = TRUE, cutreeL
 
   # test clustering is a cutree onject or a list, and if it's a list, make sure all elements are vectors with the same length, and check against number of samples in data
   if (cutree & !cutreeOveride) {
-    if (!all(c("merge","height","labels") %in% names(clustering))) { stop("cutree() will not work on the object supplied to the clustering= argument, maybe you want cutree=F? Also see Arguments in ?find_optimal") }
+    if (!all(c("merge","height") %in% names(clustering))) { stop("cutree() will not work on the object supplied to the clustering= argument, maybe you want cutree=F? Also see Arguments in ?find_optimal") }
     if (!length(cutree(tree = clustering, k = 2)) == nrow(data)) { stop("Number of samples implied from calling cutree() on object supplied to clustering= does not match the number of rows of object supplied to data=. See Arguments in ?find_optimal") }
     if (!is.integer(cutreeLevels)) { stop("Object supplied to cutreeLevels= is not an integer") }
   }
