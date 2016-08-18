@@ -23,7 +23,7 @@ find_optimal(data, clustering, family, K = 1, cutree = TRUE,
 \item{cutreeOveride}{logical. Ignored if \code{cutree = FALSE}. Should the checks on whether the object supplied to the \code{clustering} works with \code{\link[stats]{cutree}}? WARNING: only set \code{cutreeOveride = TRUE} if you are totally sure \code{\link[stats]{cutree}} works, but the error message is telling you it doesn't. See Arguments in \code{\link[stats]{cutree}} and first consider modifying the object supplied to clustering=.}
 }
 \value{
-a data frame containing the sum-of-AIC value for each clustering solution, along with the number of clusters the solution had. The object is of class \code{aicsums}
+a data frame containing the sum-of-AIC value for each clustering solution, along with the number of clusters the solution had. The object is of class \code{aicsums}.
 
 Attributes for the data frame are:
 
