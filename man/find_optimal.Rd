@@ -53,7 +53,35 @@ Gaussian LMs should be used for 'normal' data. Negative Binomial and Poisson GLM
 }
 \examples{
 
-## Example using 1) an object that cutree works on, and 2) supplying a list of clustering solutions, from kmeans and from cutree(h=)
+## Assess clustering solutions using cutree() method
+## =================================================
+
+## load data, remove transect column and cluster
+data(swamps)
+swamps <- swamps[,-1]
+## perhaps not the best clustering option, but this is base R
+swamps_clust <- hclust(d = dist(x = swamps, method = "minkowski"),
+                       method = "average")
+
+## calculate sum-of-AIC values for 2:40 clusters
+swamps_clust_aics <- find_optimal(data = swamps, clustering = swamps_clust, family = "poisson", cutreeLevels = 2:40)
+
+## plot - the lowest values wins it
+## Poisson is probably not the right choice for this data set though, since data are frequency counts
+plot(swamps_flexB_aics)
+
+## Let's try binomial regression instead, since data are frequency counts
+swamps_prop <- swamps / 30 # convert to proportion
+
+## calculate sum-of-AIC values for 2:40 clusters
+## This time use Binomial regression, since data are frequency counts
+swamps_clust_aics <- find_optimal(data = swamps_prop, clustering = swamps_clust, family = "binomial", K=30, cutreeLevels = 2:40)
+
+## plot - the lowest values wins it
+plot(swamps_flexB_aics)
+
+
+2) supplying a list of clustering solutions, from kmeans and from cutree(h=)
 
 }
 \author{
