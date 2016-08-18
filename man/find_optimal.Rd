@@ -74,7 +74,8 @@ plot(swamps_flexB_aics)
 swamps_prop <- swamps / 30 # convert to proportion
 
 ## calculate sum-of-AIC values for 2:40 clusters
-## This time use Binomial regression, since data are frequency counts
+## Note here that the data does NOT have to be the data used for clustering,
+## rather it should be the abundance (or other response type) data of interest
 swamps_clust_aics <- find_optimal(data = swamps_prop, clustering = swamps_clust, family = "binomial", K=30, cutreeLevels = 2:40)
 
 ## plot - the lowest values wins it
