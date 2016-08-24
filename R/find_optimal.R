@@ -73,7 +73,7 @@
 #' plot(swamps_clust_aics)
 #'
 #'
-#' 2) supplying a list of clustering solutions, from kmeans and from cutree(h=)
+#' ## 2) supplying a list of clustering solutions, from kmeans and from cutree(h=)
 #'
 #' @export
 
