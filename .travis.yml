@@ -1,12 +1,13 @@
-language: c
+language: r
 
-sudo: required
+sudo: false
+
+cache: packages
 
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
-  - sudo apt-get install libgsl0ldbl
 
 install:
   - ./travis-tool.sh install_deps
