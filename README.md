@@ -1,4 +1,7 @@
 optimus
+
+[![Build Status](https://travis-ci.org/mitchest/optimus.svg?branch=master)](https://travis-ci.org/mitchest/optimus)
+[![codecov.io](https://codecov.io/github/mitchest/optimus/coverage.svg?branch=master)](https://codecov.io/github/mitchest/optimus?branch=master)
 ===========
 
 ## What is optimus??
