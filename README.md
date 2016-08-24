@@ -1,7 +1,7 @@
 optimus
 ===========
 
-## What is optimus?
+## What is optimus??
 
 An R package for assessment and diagnostics of competing
 clustering solutions, using predictive models. The main intended
