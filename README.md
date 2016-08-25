@@ -20,9 +20,9 @@ found in Lyons et al. (2016).
 ## Development
 
 This is a development version, and this is also the first package
-I have written. There are certainly bug and issues, and if you
-find them, please let me know about them - either directly on
-github, or the contact details below.
+I have written for public access. There are certainly bug and issues, 
+and if you find them, please let me know about them - either 
+directly on github, or the contact details below.
 
 ## Installation
 
