@@ -64,10 +64,12 @@ swamps_clust <- hclust(d = dist(x = swamps, method = "minkowski"),
                        method = "average")
 
 ## calculate sum-of-AIC values for 2:40 clusters
-swamps_clust_aics <- find_optimal(data = swamps, clustering = swamps_clust, family = "poisson", cutreeLevels = 2:40)
+swamps_clust_aics <- find_optimal(data = swamps, clustering = swamps_clust,
+family = "poisson", cutreeLevels = 2:40)
 
 ## plot - the lowest values wins it
-## Poisson is probably not the right choice for this data set though, since data are frequency counts
+## Poisson is probably not the right choice for this data set though,
+## since data are frequency counts
 plot(swamps_clust_aics)
 
 ## Let's try binomial regression instead, since data are frequency counts
@@ -76,7 +78,8 @@ swamps_prop <- swamps / 30 # convert to proportion
 ## calculate sum-of-AIC values for 2:40 clusters
 ## Note here that the data does NOT have to be the data used for clustering,
 ## rather it should be the abundance (or other response type) data of interest
-swamps_clust_aics <- find_optimal(data = swamps_prop, clustering = swamps_clust, family = "binomial", K=30, cutreeLevels = 2:40)
+swamps_clust_aics <- find_optimal(data = swamps_prop, clustering = swamps_clust,
+family = "binomial", K=30, cutreeLevels = 2:40)
 
 ## plot - the lowest values wins it
 plot(swamps_clust_aics)
@@ -92,7 +95,7 @@ Mitchell Lyons
 Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 }
 \seealso{
-\code{\link[optimus]{plot.aicsums}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
+\code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
 }
 \keyword{optimal}
 
