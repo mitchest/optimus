@@ -38,7 +38,7 @@
 #'
 #' @references Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 #'
-#' @seealso \code{\link[optimus]{plot.aicsums}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
+#' @seealso \code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
 #'
 #' @keywords optimal
 #'
@@ -55,10 +55,12 @@
 #'                        method = "average")
 #'
 #' ## calculate sum-of-AIC values for 2:40 clusters
-#' swamps_clust_aics <- find_optimal(data = swamps, clustering = swamps_clust, family = "poisson", cutreeLevels = 2:40)
+#' swamps_clust_aics <- find_optimal(data = swamps, clustering = swamps_clust,
+#' family = "poisson", cutreeLevels = 2:40)
 #'
 #' ## plot - the lowest values wins it
-#' ## Poisson is probably not the right choice for this data set though, since data are frequency counts
+#' ## Poisson is probably not the right choice for this data set though,
+#' ## since data are frequency counts
 #' plot(swamps_clust_aics)
 #'
 #' ## Let's try binomial regression instead, since data are frequency counts
@@ -67,7 +69,8 @@
 #' ## calculate sum-of-AIC values for 2:40 clusters
 #' ## Note here that the data does NOT have to be the data used for clustering,
 #' ## rather it should be the abundance (or other response type) data of interest
-#' swamps_clust_aics <- find_optimal(data = swamps_prop, clustering = swamps_clust, family = "binomial", K=30, cutreeLevels = 2:40)
+#' swamps_clust_aics <- find_optimal(data = swamps_prop, clustering = swamps_clust,
+#' family = "binomial", K=30, cutreeLevels = 2:40)
 #'
 #' ## plot - the lowest values wins it
 #' plot(swamps_clust_aics)
@@ -110,7 +113,7 @@ find_optimal <- function(data, clustering, family, K = 1, cutree = TRUE, cutreeL
     message("Note: Using clustering solutions supplied to clustering=,")
     if (!is.list(clustering)) { stop("object supplied to clustering= is not a list, see Arguments in ?find_optimal") }
     if (!all(unlist(lapply(clustering, is.atomic)))) { stop("some components list supplied to clustering= are not atomic vectors, see Arguments in ?find_optimal. Try: unlist(lapply(clustering, class))") }
-    if (!cutree & !optimus:::zero_range(unlist(lapply(clustering, length)))) { stop("Number of sample labels do not match in all components of the list supplied to clustering=, see Arguments in ?find_optimal") }
+    if (!cutree & !zero_range(unlist(lapply(clustering, length)))) { stop("Number of sample labels do not match in all components of the list supplied to clustering=, see Arguments in ?find_optimal") }
     if (!cutree & !length(clustering[[1]] == nrow(data))) { stop("Number of sample labels in list components supplied to clustering= does not match the number of rows of object supplied to data=. See Arguments in ?find_optimal") }
     message("they will be coerced to factors.")
   }
