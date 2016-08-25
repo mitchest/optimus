@@ -36,8 +36,8 @@ poisson_char <- function(clusterSolution, data) {
 binomial_char <- function(clusterSolution, data, K) {
   data <- mvabund::mvabund(data)
   # possibly change logistic regression to link='cloglog', but for the meantime use logit link
-  fit <- mvabund::manyglm(formula = data ~ as.factor(clusterSolution), family = binomial(link='logit'), K = K)
-  fit_null <- mvabund::manyglm(formula = data ~ 1, family = binomial(link='logit'), K = K)
+  fit <- mvabund::manyglm(formula = data ~ as.factor(clusterSolution), family = stats::binomial(link='logit'), K = K)
+  fit_null <- mvabund::manyglm(formula = data ~ 1, family = stats::binomial(link='logit'), K = K)
   daic <- data.frame(sort(fit_null$aic - fit$aic, decreasing = TRUE))
   data.frame(variables = row.names(daic),
              dAIC=daic$sort)
