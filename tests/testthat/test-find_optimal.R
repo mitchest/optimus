@@ -35,7 +35,7 @@ counts_list <- lapply(2:10, FUN = function(x, data){cutree(tree = data, k = x)},
 ## generic input tests
 test_that("find_optimal() stops with wrong data or arguments", {
   # wrong family spec
-  expect_error(expr = optimus::find_optimal(data = mixed, clustering = counts_cutree, family = "poisson"), message = "Some.*")
+  expect_error(expr = optimus::find_optimal(data = mixed, clustering = counts_cutree, family = "poisson"), message = "some.*")
   # not cutree with cutree=T
   # not list with cutree=F
   # uneven cluster list lengths
