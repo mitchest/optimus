@@ -17,7 +17,7 @@
 #'   \item Gaussian (LM)
 #'   \item Negative Binomial (GLM with log link)
 #'   \item Poisson (GLM with log link)
-#'   \item Binomial (GLM with logit link)
+#'   \item Binomial (GLM with cloglog link for binary daya, logit link otherwise)
 #'   \item Ordinal (Proportional odds model with logit link)
 #' }
 #'
@@ -38,7 +38,7 @@
 #'
 #' @references Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 #'
-#' @seealso \code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
+#' @seealso \code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, \code{\link[optimus]{merge_clusters}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
 #'
 #' @keywords optimal
 #'

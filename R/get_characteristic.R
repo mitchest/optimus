@@ -14,7 +14,7 @@
 #'   \item Gaussian (LM)
 #'   \item Negative Binomial (GLM with log link)
 #'   \item Poisson (GLM with log link)
-#'   \item Binomial (GLM with logit link)
+#'   \item Binomial (GLM with cloglog link for binary daya, logit link otherwise)
 #'   \item Ordinal (Proportional odds model with logit link)
 #' }
 #'
