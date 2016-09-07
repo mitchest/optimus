@@ -1,6 +1,6 @@
 #' @title Determine the characteristicvariables (e.g. species) of a clustering solution (e.g. classificaiton)
 #'
-#' @description \code{get_characteristic} takes a clustering solution and calculates the delta AIC value for each variable. In Ecology, particularly vegettion science, this is the process of determining characteristic (or diagnostic/indicator) species of a classification.
+#' @description \code{get_characteristic} takes a clustering solution, fits models based on the underlying multivariate data, and calculates delta AIC value for each variable. In Ecology, particularly vegetation science, this is the process of determining characteristic (or diagnostic/indicator) species of a classification.
 #'
 #' @param data a data frame (or object that can be coerced by \code{\link[base]{as.data.frame}} containing the "raw" multivariate data. This is not necessarily the data used by the clustering algorithm - it is the data on which you are testing the predictive ablity of the clustering solution.
 #' @param clustering a clustering solution for \code{data}, that is, a vector of cluster labels (that can be coerced by \code{\link[base]{as.factor}}). The number of cluster labels must match the number of rows of the object supplied in the \code{data} argument. The solution could for exmaple come form a call to \code{\link[stats]{cutree}}, see Examples
