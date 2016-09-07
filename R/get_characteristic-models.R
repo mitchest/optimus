@@ -14,7 +14,7 @@ gaussian_char <- function(clusterSolution, data, nclusters) {
   null_aic <- (2 * (nclusters + 2)) + (nrow(data) * log(null_rss))
   daic <- data.frame(sort(null_aic - fit_aic, decreasing = TRUE))
   data.frame(variables = row.names(daic),
-             dAIC=daic$sort)
+             dAIC = daic$sort)
 }
 
 # negative binomal glms via mvabund
@@ -24,7 +24,7 @@ negbin_char <- function(clusterSolution, data) {
   fit_null <- mvabund::manyglm(formula = data ~ 1, family = "negative.binomial")
   daic <- data.frame(sort(fit_null$aic - fit$aic, decreasing = TRUE))
   data.frame(variables = row.names(daic),
-             dAIC=daic$sort)
+             dAIC = daic$sort)
 }
 
 # poisson glms via mvabund
@@ -34,7 +34,7 @@ poisson_char <- function(clusterSolution, data) {
   fit_null <- mvabund::manyglm(formula = data ~ 1, family = "poisson")
   daic <- data.frame(sort(fit_null$aic - fit$aic, decreasing = TRUE))
   data.frame(variables = row.names(daic),
-             dAIC=daic$sort)
+             dAIC = daic$sort)
 }
 
 # binomal glms (K=1 for logistic regression) via mvabund
@@ -50,7 +50,7 @@ binomial_char <- function(clusterSolution, data, K) {
     daic <- data.frame(sort(fit_null$aic - fit$aic, decreasing = TRUE))
   }
   data.frame(variables = row.names(daic),
-             dAIC=daic$sort)
+             dAIC = daic$sort)
 }
 
 # ordinal regression via clm
@@ -60,7 +60,7 @@ ordinal_char <- function(clusterSolution, data) {
   fit_null <- manyclm(responses = data, predictor = 1)
   daic <- data.frame(sort(fit_null - fit, decreasing = TRUE))
   data.frame(variables = row.names(daic),
-             dAIC=daic$sort)
+             dAIC = daic$sort)
 }
 
 manyclm <- function(responses, predictor) {
