@@ -1,48 +1,29 @@
-start.k = 50 # choose initial k for merging
-n.iter = 48 # choose number of merging iterations
-
-alloc.test = cutree(cover.flex, start.k)
-for (i in 1:n.iter) {
-  print(paste0("Starting merging iteration ",i,":"))
-  pairs = GeneratePairwise(alloc.test)
-  #PairwiseCombinedSpeciesCount(pa, alloc.test, pairs)
-  alloc.test.pairwise = PairwiseManyglm(pa, alloc.test, pairs)
-  #alloc.test.pairwise.sorted = alloc.test.pairwise[with(alloc.test.pairwise, order(deltaSumAIC)),]
-  # calculate summary and merge clusters using this information
-  PairwiseSummary(alloc.test, alloc.test.pairwise)
-  merge.pair = c(as.numeric(alloc.test.pairwise$target[alloc.test.pairwise$deltaSumAIC==min(alloc.test.pairwise$deltaSumAIC)]),
-                 as.numeric(alloc.test.pairwise$test[alloc.test.pairwise$deltaSumAIC==min(alloc.test.pairwise$deltaSumAIC)]))
-  alloc.test[alloc.test==merge.pair[1] | alloc.test==merge.pair[2]] = 1000 + i
-  print("#############")
-  print(paste0("merged cluster: ",merge.pair[1]," and ",merge.pair[2]))
-  print("#############")
-  assign(x=paste0("alloc.test.",start.k-i), value=alloc.test)
-}
-
-# fit and get AIC
-
-alloc.list = list()
-for (i in 1:length(2:49)) {
-  alloc.list[[i]] = get(paste0("alloc.test.",c(2:49)[i]))
-}
-save(alloc.list, file="alloc.list.RData")
-
-data = mvabund(pa)
-alloc.sumAIC = numeric(length(alloc.list))
-for (i in 1:length(alloc.list)) {
-  alloc.sumAIC[i] = manyglm(formula=data~as.factor(alloc.list[[i]]), family="binomial")$AICsum
-}
-
-alloc.pairwise.AIC = data.frame(AICsum=alloc.sumAIC, groups=c(2:49))
-load("pa.AICsum.RData")
-pa.AICsum.pairwise = rbind(pa.AICsum, alloc.pairwise.AIC)
-save(pa.AICsum.pairwise, file="pa.AICsum.pairwise.RData")
-load("pa.AICsum.pairwise.RData")
 
 
-# plot pairwise modelling merges
-AIC.hclust = pa.AICsum.pairwise[1:49,]
-AIC.pairwise = pa.AICsum.pairwise[50:97,]
+# # fit and get AIC - move this to Examples i think
+#
+# alloc.list = list()
+# for (i in 1:length(2:49)) {
+#   alloc.list[[i]] = get(paste0("alloc.test.",c(2:49)[i]))
+# }
+# save(alloc.list, file="alloc.list.RData")
+#
+# data = mvabund(pa)
+# alloc.sumAIC = numeric(length(alloc.list))
+# for (i in 1:length(alloc.list)) {
+#   alloc.sumAIC[i] = manyglm(formula=data~as.factor(alloc.list[[i]]), family="binomial")$AICsum
+# }
+#
+# alloc.pairwise.AIC = data.frame(AICsum=alloc.sumAIC, groups=c(2:49))
+# load("pa.AICsum.RData")
+# pa.AICsum.pairwise = rbind(pa.AICsum, alloc.pairwise.AIC)
+# save(pa.AICsum.pairwise, file="pa.AICsum.pairwise.RData")
+# load("pa.AICsum.pairwise.RData")
+#
+#
+# # plot pairwise modelling merges
+# AIC.hclust = pa.AICsum.pairwise[1:49,]
+# AIC.pairwise = pa.AICsum.pairwise[50:97,]
 
 
 
@@ -50,87 +31,102 @@ AIC.pairwise = pa.AICsum.pairwise[50:97,]
 # FUNCTIONS ---------------------------------------------------------------
 
 
-GeneratePairwise = function(communities) {
+generate_pairwise <- function(cluster_labels) {
   # generate pairwise tests
-  communities = as.character(unique(communities))
-  target.com = character(round(length(communities)^2/2))
-  test.com = character(round(length(communities)^2/2))
-  # loop across communities to create pairwise comparisons, without reverse tests
-  ticker=0
-  for (target in 1:(length(communities)-1)){
-    for (test in target:(length(communities)-1)){
-      ticker = ticker+1
-      target.com[ticker] = communities[target]
-      test.com[ticker] = communities[test+1]
+  unique_labs <- as.character(unique(cluster_labels))
+  target <- character(round(length(unique_labs)^2 / 2))
+  test <- character(round(length(unique_labs)^2 / 2))
+  # loop across unique_labs to create pairwise comparisons, without reverse tests
+  ticker <- 0
+  for (itarget in 1:(length(unique_labs) - 1)) {
+    for (itest in itarget:(length(unique_labs) - 1)) {
+      ticker <- (ticker + 1)
+      target[ticker] <- unique_labs[itarget]
+      test[ticker] <- unique_labs[(itest+1)]
     }
   }
-  target.com=target.com[!target.com==""]
-  test.com=test.com[!test.com==""]
-  return(data.frame(target=target.com, test=test.com, stringsAsFactors=F))
+  target <- target[!target == ""]
+  test <-  test[!test == ""]
+
+  data.frame(target = target, test = test, stringsAsFactors = FALSE)
 }
 
-## function that calculates the species count after removing species with 0 occurance in a pariwise combination
-PairwiseCombinedSpeciesCount = function(multivar, predictor, pairs) {
-  target = as.character(pairs$target)
-  test = as.character(pairs$test)
-  for (i in 1:length(target)){
+
+pairwise_fits <- function(data, cluster_labels, pairs, family, K) {
+  target <- as.character(pairs$target)
+  test <- as.character(pairs$test)
+  nvars <- numeric(nrow(pairs)) # don't actually do anything with this yet...
+  dAIC_sum <- numeric(nrow(pairs))
+  #rank <- numeric(nrow(pairs))
+
+  for (i in 1:length(target)) {
     # subset to target sites
-    target.rows = which(predictor==target[i])
-    target.multivar = multivar[target.rows,]
-    target.pred = predictor[target.rows]
+    target_rows <- which(cluster_labels == target[i])
+    target_data <- data[target_rows,]
+    target_cluster <- cluster_labels[target_rows]
     # subset to test sites
-    test.rows = which(predictor==test[i])
-    test.multivar = multivar[test.rows,]
-    test.pred = predictor[test.rows]
+    test_rows <- which(cluster_labels == test[i])
+    test_data <- data[test_rows,]
+    test_cluster <- cluster_labels[test_rows]
     # create data objects for the pariwise test
-    combined.multivar = rbind(target.multivar, test.multivar)
-    combined.multivar = combined.multivar[,colSums(combined.multivar)>0] # remove species that don't occur in either community
-    print(ncol(combined.multivar))
+    combined_data <- as.data.frame(rbind(target_data, test_data))
+    combined_cluster <- as.factor(c(as.character(target_cluster), as.character(test_cluster)))
+
+    # fit models
+
+    #############
+    ####### -> don't forget to update supported_fams()
+
+
+    if (family == "negative.binomial") {
+      combined_data <- mvabund::mvabund(combined_data)
+      fit <- mvabund::manyglm(combined_data ~ combined_cluster, family="negative.binomial")
+      fit_null <- mvabund::manyglm(combined_data ~ 1, family="negative.binomial")
+    }
+
+    # store results
+    nvars[i] <- ncol(combined_data)
+    dAIC_sum[i] <- fit_null$AICsum - fit$AICsum
+    # # calculate % of species for which dAIC (from null) is >n
+    # dAIC <- fit_null$aic-fit$aic
+    # rank[i] <- sum(dAIC>4)/length(dAIC)
   }
+  data.frame(target = pairs$target, test = pairs$test, #rank = rank
+             nvars = nvars, dAIC_sum = dAIC_sum, stringsAsFactors=FALSE)
 }
 
-PairwiseManyglm = function(multivar, predictor, pairs) {
-  target = as.character(pairs$target)
-  test = as.character(pairs$test)
-  rank = numeric(nrow(pairs))
-  nspecies = numeric(nrow(pairs))
-  deltaSumAIC = numeric(nrow(pairs))
-  for (i in 1:length(target)){
-    # subset to target sites
-    target.rows = which(predictor==target[i])
-    target.multivar = multivar[target.rows,]
-    target.pred = predictor[target.rows]
-    # subset to test sites
-    test.rows = which(predictor==test[i])
-    test.multivar = multivar[test.rows,]
-    test.pred = predictor[test.rows]
-    # create data objects for the pariwise test
-    combined.multivar = rbind(target.multivar, test.multivar)
-    combined.multivar = mvabund(data.matrix(combined.multivar))
-    #combined.multivar = mvabund(data.matrix(combined.multivar[,colSums(combined.multivar)>0])) # remove double absences
-    combined.pred = as.factor(c(as.character(target.pred), as.character(test.pred)))
-    # fit/test the model
-    fit = manyglm(combined.multivar ~ combined.pred, family="negative.binomial")
-    fit.null = manyglm(combined.multivar ~ 1, family="negative.binomial")
-    # calculate % of species for which dAIC (from null) is >n
-    dAIC = fit.null$aic-fit$aic
-    rank[i] = sum(dAIC>4)/length(dAIC)
-    nspecies[i] = ncol(combined.multivar)
-    deltaSumAIC[i] = fit.null$AICsum - fit$AICsum
-  }
-  return(data.frame(pairs, rank, nspecies, deltaSumAIC, stringsAsFactors=F))
-}
 
-## function that calculates lowest ranked pairwise comparison and lowest ranked cluster
-# alloc==allocation used, pairwisemanyglm=object from PairwiseManyglm() using alloc
-PairwiseSummary = function(alloc, pairwisemanyglm) {
-  # print cluster numbers
-  print(table(alloc))
-  # find lowest ranked pairwise comparison
-  print(pairwisemanyglm[pairwisemanyglm$deltaSumAIC==min(pairwisemanyglm$deltaSumAIC),])
-  # find cluster that has lowest mean ranks
-  #   for (i in unique(alloc)) {
-  #     print(paste0("Cluster ",i," mean delta sum-of-AIC:"))
-  #     print(mean(pairwisemanyglm$deltaSumAIC[pairwisemanyglm$target==i | pairwisemanyglm$test==i]))
-  #   }
-}
+# ## function that calculates the species count after removing species with 0 occurance in a pariwise combination
+# PairwiseCombinedSpeciesCount = function(data, cluster_labels, pairs) {
+#   target = as.character(pairs$target)
+#   test = as.character(pairs$test)
+#   for (i in 1:length(target)){
+#     # subset to target sites
+#     target.rows = which(cluster_labels==target[i])
+#     target.data = data[target.rows,]
+#     target.cluster = cluster_labels[target.rows]
+#     # subset to test sites
+#     test.rows = which(cluster_labels==test[i])
+#     test.data = data[test.rows,]
+#     test.cluster = cluster_labels[test.rows]
+#     # create data objects for the pariwise test
+#     combined.data = rbind(target.data, test.data)
+#     combined.data = combined.data[,colSums(combined.data)>0] # remove species that don't occur in either community
+#     print(ncol(combined.data))
+#   }
+# }
+
+
+# ## function that calculates lowest ranked pairwise comparison and lowest ranked cluster
+# # alloc==allocation used, pairwisemanyglm=object from PairwiseManyglm() using alloc
+# PairwiseSummary = function(alloc, pairwisemanyglm) {
+#   # print cluster numbers
+#   print(table(alloc))
+#   # find lowest ranked pairwise comparison
+#   print(pairwisemanyglm[pairwisemanyglm$dAIC_sum==min(pairwisemanyglm$dAIC_sum),])
+#   # find cluster that has lowest mean ranks
+#   #   for (i in unique(alloc)) {
+#   #     print(paste0("Cluster ",i," mean delta sum-of-AIC:"))
+#   #     print(mean(pairwisemanyglm$dAIC_sum[pairwisemanyglm$target==i | pairwisemanyglm$test==i]))
+#   #   }
+# }

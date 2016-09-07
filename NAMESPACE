@@ -3,4 +3,5 @@
 S3method(plot,aicsums)
 export(find_optimal)
 export(get_characteristic)
+export(merge_clusters)
 importFrom(graphics,plot)
