@@ -81,7 +81,7 @@
 #' @export
 
 
-find_optimal <- function(data, clustering, family, K = 1, cutree = TRUE, cutreeLevels = 2:10, cutreeOveride = FALSE) {
+find_optimal <- function(data, clustering, family, K = 1, cutree = NULL, cutreeLevels = 2:10, cutreeOveride = FALSE) {
   data <- as.data.frame(data)
 
   # test specified family is supported
@@ -94,6 +94,17 @@ find_optimal <- function(data, clustering, family, K = 1, cutree = TRUE, cutreeL
   # test multivar data input (i.e. is char/num/factor)
   if (family != "ordinal" & any(unlist(lapply(data, class)) %in% c("factor", "character"))) {
     stop("some of the input data are factors or characters, are you looking for ordinal regression?")
+  }
+
+  # auto-detect whether cutree() can be used
+  if (is.null(cutree) & !cutreeOveride) {
+    if (all(c("merge","height") %in% names(clustering))){
+      cutree <- TRUE
+      message("clustering= object WILL work with cutree(), setting cutree=TRUE")
+    } else {
+      cutree <- FALSE
+      message("clustering= object WILL NOT work with cutree(), setting cutree=FALSE")
+    }
   }
 
   # test clustering is a cutree onject or a list, and if it's a list, make sure all elements are vectors with the same length, and check against number of samples in data
@@ -110,7 +121,7 @@ find_optimal <- function(data, clustering, family, K = 1, cutree = TRUE, cutreeL
   }
 
   if (!cutree) {
-    message("Note: Using clustering solutions supplied to clustering=,")
+    message("Note: Using individual clustering solutions supplied to clustering=,")
     if (!is.list(clustering)) { stop("object supplied to clustering= is not a list, see Arguments in ?find_optimal") }
     if (!all(unlist(lapply(clustering, is.atomic)))) { stop("some components list supplied to clustering= are not atomic vectors, see Arguments in ?find_optimal. Try: unlist(lapply(clustering, class))") }
     if (!cutree & !zero_range(unlist(lapply(clustering, length)))) { stop("Number of sample labels do not match in all components of the list supplied to clustering=, see Arguments in ?find_optimal") }
