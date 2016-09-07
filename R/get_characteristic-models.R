@@ -35,10 +35,15 @@ poisson_char <- function(clusterSolution, data) {
 # binomal glms (K=1 for logistic regression) via mvabund
 binomial_char <- function(clusterSolution, data, K) {
   data <- mvabund::mvabund(data)
-  # possibly change logistic regression to link='cloglog', but for the meantime use logit link
-  fit <- mvabund::manyglm(formula = data ~ as.factor(clusterSolution), family = stats::binomial(link='logit'), K = K)
-  fit_null <- mvabund::manyglm(formula = data ~ 1, family = stats::binomial(link='logit'), K = K)
-  daic <- data.frame(sort(fit_null$aic - fit$aic, decreasing = TRUE))
+  if (K == 1) { # cloglog link is better for pres/abs
+    fit <- mvabund::manyglm(formula = data ~ as.factor(clusterSolution), family = stats::binomial(link='logit'), K = K)
+    fit_null <- mvabund::manyglm(formula = data ~ 1, family = stats::binomial(link='cloglog'), K = K)
+    daic <- data.frame(sort(fit_null$aic - fit$aic, decreasing = TRUE))
+  } else {
+    fit <- mvabund::manyglm(formula = data ~ as.factor(clusterSolution), family = stats::binomial(link='logit'), K = K)
+    fit_null <- mvabund::manyglm(formula = data ~ 1, family = stats::binomial(link='logit'), K = K)
+    daic <- data.frame(sort(fit_null$aic - fit$aic, decreasing = TRUE))
+  }
   data.frame(variables = row.names(daic),
              dAIC=daic$sort)
 }

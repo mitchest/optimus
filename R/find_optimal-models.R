@@ -27,9 +27,13 @@ poisson_loop <- function(cluster_list, data) {
 # binomal glms (K=1 for logistic regression) via mvabund
 binomial_loop <- function(cluster_list, data, K) {
   data <- mvabund::mvabund(data)
-  # possibly change logistic regression to link='cloglog', but for the meantime use logit link
-  sum_aic <- function(x, data) {mvabund::manyglm(formula = data ~ as.factor(x), family = stats::binomial(link="logit"), K=K)$AICsum}
-  unlist(lapply(X = cluster_list, FUN = sum_aic, data = data))
+  if (K == 1) { # cloglog link is better for pres/abs
+    sum_aic <- function(x, data) {mvabund::manyglm(formula = data ~ as.factor(x), family = stats::binomial(link="cloglog"), K=K)$AICsum}
+    unlist(lapply(X = cluster_list, FUN = sum_aic, data = data))
+  } else {
+    sum_aic <- function(x, data) {mvabund::manyglm(formula = data ~ as.factor(x), family = stats::binomial(link="logit"), K=K)$AICsum}
+    unlist(lapply(X = cluster_list, FUN = sum_aic, data = data))
+  }
 }
 
 # ordinal regression via clm

@@ -158,7 +158,7 @@ find_optimal <- function(data, clustering, family, K = 1, cutree = TRUE, cutreeL
 
   # attributes/class for aic_sums
   attr(aic_sums, "family") <- family
-  attr(aic_sums, "K") <- K
+  if (family == "binomial") {attr(aic_sums, "K") <- K}
   attr(aic_sums, "cutree") <- cutree
   attr(aic_sums, "cutreeLevels") <- cutreeLevels
   class(aic_sums) <- c("aicsums","data.frame")
