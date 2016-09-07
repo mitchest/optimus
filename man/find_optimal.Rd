@@ -14,7 +14,7 @@ find_optimal(data, clustering, family, K = 1, cutree = TRUE,
 
 \item{family}{a character string denoting the error distribution to be used for model fitting. The options are similar to those in \code{\link[stats]{family}}, but are more limited - see Details.}
 
-\item{K}{number of trials in binomial regression. By default, K=1 for presence-absence data (logistic regression).}
+\item{K}{number of trials in binomial regression. By default, K=1 for presence-absence data (with cloglog link).}
 
 \item{cutree}{logical. Whether \code{\link[stats]{cutree}} should be used on the object supplied to the \code{clustering} argument}
 
@@ -35,7 +35,7 @@ Attributes for the data frame are:
 }
 }
 \description{
-\code{find_optimal} takes a clustering solution, or a set of related clustering solutions, and calculates the sum-of-AIC value for the solution/s. The smallest sum-of-AIC value is the optimal solution.
+\code{find_optimal} takes a clustering solution, or a set of related clustering solutions, fits models based on the underlying multivariate data, and calculates the sum-of-AIC value for the solution/s. The smallest sum-of-AIC value is the optimal solution.
 }
 \details{
 \code{find_optimal} is built on the premise that a \emph{good} clustering solution (i.e. a classification) should provide information about the composition and abundance of the multivariate data it is classifying. A natural way to formalize this is with a predictive model, where group membership (clusters) is the predictor, and the multivariate data (site by variables matrix) is the response. \code{find_optimal} fits linear models to each variable, and calculates the sum of the AIC value (sum-of-AIC) for each model. sum-of-AIC is motivated as an estimate of Kullback-Leibler distance, so we posit that the clustering solution that minimises the sum-of-AIC value is the \emph{best}. So, in context of optimal partitioning, \code{find_optimal} can be used to automatically and objectively decide which clustering solution is the best among competing solutions. Lyons et al. (2016) provides background, a detailed description of the methodology, and application of sum-of-AIC on both real and simulated ecological multivariate abundance data.
@@ -45,7 +45,7 @@ At present, \code{find_optimal} supports the following error distributions for m
   \item Gaussian (LM)
   \item Negative Binomial (GLM with log link)
   \item Poisson (GLM with log link)
-  \item Binomial (GLM with logit link)
+  \item Binomial (GLM with cloglog link for binary daya, logit link otherwise)
   \item Ordinal (Proportional odds model with logit link)
 }
 
@@ -95,7 +95,9 @@ Mitchell Lyons
 Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 }
 \seealso{
-\code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
+\code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, \code{\link[optimus]{merge_clusters}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
 }
-\keyword{optimal}
+\keyword{optimal,}
+\keyword{partition,}
+\keyword{partitioning}
 

@@ -9,11 +9,11 @@ get_characteristic(data, clustering, family, K = 1)
 \arguments{
 \item{data}{a data frame (or object that can be coerced by \code{\link[base]{as.data.frame}} containing the "raw" multivariate data. This is not necessarily the data used by the clustering algorithm - it is the data on which you are testing the predictive ablity of the clustering solution.}
 
-\item{clustering}{a clustering solution for \code{data}, that is, a vector of cluster labels (that can be coerced by \code{\link[base]{as.factor}}). The number of cluster labels must match the number of rows of the object supplied in the \code{data} argument. The solution could for exmaple come form a call to \code{\link[stats]{cutree}}, see Examples}
+\item{clustering}{a clustering solution for \code{data}, that is, a vector of cluster labels (that can be coerced by \code{\link[base]{as.factor}}). The number of cluster labels must match the number of rows of the object supplied in the \code{data} argument. The solution could for example come form a call to \code{\link[stats]{cutree}}, see Examples}
 
 \item{family}{a character string denoting the error distribution to be used for model fitting. The options are similar to those in \code{\link[stats]{family}}, but are more limited - see Details.}
 
-\item{K}{number of trials in binomial regression. By default, K=1 for presence-absence data (logistic regression).}
+\item{K}{number of trials in binomial regression. By default, K=1 for presence-absence data (with cloglog link).}
 }
 \value{
 a data frame containing the delta AIC values for each variable in \code{data}. The object is of class \code{daic}.
@@ -26,7 +26,7 @@ Attributes for the data frame are:
 }
 }
 \description{
-\code{get_characteristic} takes a clustering solution and calculates the delta AIC value for each variable. In Ecology, particularly vegettion science, this is the process of determining characteristic (or diagnostic/indicator) species of a classification.
+\code{get_characteristic} takes a clustering solution, fits models based on the underlying multivariate data, and calculates delta AIC value for each variable. In Ecology, particularly vegetation science, this is the process of determining characteristic (or diagnostic/indicator) species of a classification.
 }
 \details{
 \code{get_characteristic} is built on the premise that a \emph{good} clustering solution (i.e. a classification) should provide information about the composition and abundance of the multivariate data it is classifying. A natural way to formalize this is with a predictive model, where group membership (clusters) is the predictor, and the multivariate data (site by variables matrix) is the response. \code{get_characteristic} fits linear models to each variable, and calculates the delta AIC (that is, to the corresponding null model). The larger the delta AIC, the \emph{more} characteristic that species is for the given classification. Lyons et al. (2016) provides background, a detailed description of the methodology, and application of delta AIC on both real and simulated ecological multivariate abundance data.
@@ -36,7 +36,7 @@ At present, \code{get_characteristic} supports the following error distributions
   \item Gaussian (LM)
   \item Negative Binomial (GLM with log link)
   \item Poisson (GLM with log link)
-  \item Binomial (GLM with logit link)
+  \item Binomial (GLM with cloglog link for binary daya, logit link otherwise)
   \item Ordinal (Proportional odds model with logit link)
 }
 
@@ -75,5 +75,7 @@ Lyons et al. 2016. Model-based assessment of ecological community classification
 \seealso{
 \code{\link[optimus]{find_optimal}}, S3 print function for 'daic' class, S3 residual plotting function
 }
-\keyword{characteristic}
+\keyword{characteristic,}
+\keyword{diagnostic,}
+\keyword{indicator}
 
