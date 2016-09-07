@@ -4,7 +4,7 @@
 \alias{find_optimal}
 \title{Find an optimal classification among competing clustering solutions}
 \usage{
-find_optimal(data, clustering, family, K = 1, cutree = TRUE,
+find_optimal(data, clustering, family, K = 1, cutree = NULL,
   cutreeLevels = 2:10, cutreeOveride = FALSE)
 }
 \arguments{
@@ -16,7 +16,7 @@ find_optimal(data, clustering, family, K = 1, cutree = TRUE,
 
 \item{K}{number of trials in binomial regression. By default, K=1 for presence-absence data (with cloglog link).}
 
-\item{cutree}{logical. Whether \code{\link[stats]{cutree}} should be used on the object supplied to the \code{clustering} argument}
+\item{cutree}{logical, but default is \code{NULL} for auto-detection. Whether \code{\link[stats]{cutree}} should be used on the object supplied to the \code{clustering} argument}
 
 \item{cutreeLevels}{a numerical vector specifying the different paritioning levels to calculate sum-of-AIC for (that is the values of \code{k} to be supplied to \code{\link[stats]{cutree}}). Ignored if \code{cutree = FALSE}, as the number of partitions will be automatically generated from the number of unique levels in each component of \code{clustering}.}
 
