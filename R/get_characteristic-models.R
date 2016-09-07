@@ -5,11 +5,16 @@
 # gaussian lms via mvabund
 ####### ---> need to check whether the RSS methods is OK for AIC for least squares out of manylm???? Looks like it overfits??
 gaussian_char <- function(clusterSolution, data, nclusters) {
-  # data <- mvabund::mvabund(data)
-  # get_rss <- function(x, data) {sum( ((mvabund::manylm(formula = data ~ as.factor(x))$residuals)^2) )}
-  # sum_rss <- unlist(lapply(X = clusterSolution, FUN = get_rss, data = data))
-  # (2 * (nclusters + 2)) + (nrow(data) * log(sum_rss))
-  stop("Sorry, still working on Gaussian...")
+  data <- mvabund::mvabund(data)
+  fit_rss <- apply(X = mvabund::manylm(formula = data ~ as.factor(clusterSolution))$residuals^2,
+                  MARGIN = 2, FUN = sum)
+  fit_aic <- (2 * (nclusters + 2)) + (nrow(data) * log(fit_rss))
+  null_rss <- apply(X = mvabund::manylm(formula = data ~ 1)$residuals^2,
+                   MARGIN = 2, FUN = sum)
+  null_aic <- (2 * (nclusters + 2)) + (nrow(data) * log(null_rss))
+  daic <- data.frame(sort(null_aic - fit_aic, decreasing = TRUE))
+  data.frame(variables = row.names(daic),
+             dAIC=daic$sort)
 }
 
 # negative binomal glms via mvabund
