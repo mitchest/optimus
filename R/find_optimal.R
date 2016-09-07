@@ -87,8 +87,8 @@ find_optimal <- function(data, clustering, family, K = 1, cutree = TRUE, cutreeL
   # test specified family is supported
   supported_fams <- c("gaussian", "negative.binomial", "poisson", "binomial", "ordinal")
   if (!family %in% supported_fams) {
-    stop(paste0("family specified is not valid (typo?) or not yet supported, please choose from: ",
-                paste(supported_fams, collapse = ", ")))
+    stop("family specified is not valid (typo?) or not yet supported, please choose from: ",
+                paste(supported_fams, collapse = ", "))
   }
 
   # test multivar data input (i.e. is char/num/factor)
