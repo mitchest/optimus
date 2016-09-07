@@ -40,7 +40,7 @@
 #'
 #' @seealso \code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, \code{\link[optimus]{merge_clusters}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
 #'
-#' @keywords optimal
+#' @keywords optimal, partition, partitioning
 #'
 #' @examples
 #'

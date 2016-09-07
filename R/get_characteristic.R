@@ -35,7 +35,7 @@
 #'
 #' @seealso \code{\link[optimus]{find_optimal}}, S3 print function for 'daic' class, S3 residual plotting function
 #'
-#' @keywords characteristic
+#' @keywords characteristic, diagnostic, indicator
 #'
 #' @examples
 #'
