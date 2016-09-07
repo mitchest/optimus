@@ -19,15 +19,16 @@ found in Lyons et al. (2016).
 
 ## Development
 
-This is a development version, and this is also the first package
-I have written for public access. There are certainly bug and issues, 
-and if you find them, please let me know about them - either 
-directly on github, or the contact details below.
+This package has just come out of 'official' development, but 
+functionality will continue to be refined and added. This is also 
+the first package I have written for public access, so there will
+inevitably be bug and issues. If you find them, please let me know
+about them - either directly on github, or the contact details below.
 
 ## Installation
 
 I have not yet figured out how to host binary packages for optimus.
-If you have the correct dev tools and compilers on your system,
+If you have the correct devtools and compilers on your system,
 then you can compile the package yourself from source (on github).
 
 Honestly, the easiest way to install (until I get optimus on CRAN),
