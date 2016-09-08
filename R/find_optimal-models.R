@@ -43,11 +43,6 @@ ordinal_loop <- function(cluster_list, data) {
   unlist(lapply(X = cluster_list, FUN = sum_aic, data = data))
 }
 
-manyclm_sum <- function(responses, clusters) {
-  sum_clm_aics <- function(x, clusters) {stats::AIC(ordinal::clm(formula = x ~ clusters))}
-  sum(unlist(lapply(X = responses, FUN = sum_clm_aics, clusters = clusters)))
-}
-
 
 
 # more distributions to add -----------------------------------------------
@@ -60,6 +55,15 @@ manyclm_sum <- function(responses, clusters) {
 # for (i in 1:length(groups)) {
 #   alloc = cutree(clust, groups[i])
 #   AICsum[i] = manybeta.AICsum(data, as.factor(alloc))
+# }
+#
+# manybeta.AICsum = function(response, predictor) {
+#   AIC = numeric(nrow(response))
+#   for (i in 1:ncol(response)) {
+#     AIC[i] = gamlss(data[,i]~predictor, family=BEZI())$aic
+#     print(cat("------", "\n", i, "\n","------"))
+#   }
+#   return(sum(AIC))
 # }
 #
 # # use compund Poisson-gamma (i.e. tweedie with power= 1.5)

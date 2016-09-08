@@ -63,39 +63,3 @@ ordinal_char <- function(clusterSolution, data) {
              dAIC = daic$sort)
 }
 
-manyclm <- function(responses, predictor) {
-  if (length(predictor)==1) { # null model
-    aics <- unlist(lapply(X = responses,
-                          FUN = function(x) {stats::AIC(ordinal::clm(x ~ 1))}))
-    variables <- unlist(lapply(X = responses, FUN = names))
-  } else {
-    aics <- unlist(lapply(X = responses,
-                          FUN = function(x, predictor) {stats::AIC(ordinal::clm(x ~ predictor))},
-                          predictor = predictor))
-    variables <- unlist(lapply(X = responses, FUN = names))
-  }
-  names(aics) = variables
-  aics
-}
-
-
-
-# more distributions to add -----------------------------------------------
-
-# # cover
-# #data = ((cover/100)*(nrow(cover)-1)+0.5)/nrow(cover) # this is a transformation for betareg
-# data = cover/100
-# # use zero/one inflated beta
-# AICsum = numeric(length(groups))
-# for (i in 1:length(groups)) {
-#   alloc = cutree(clust, groups[i])
-#   AICsum[i] = manybeta.AICsum(data, as.factor(alloc))
-# }
-#
-# # use compund Poisson-gamma (i.e. tweedie with power= 1.5)
-# AICsum = numeric(length(groups))
-# for (i in 1:length(groups)) {
-#   Xdata = data.frame(alloc=cutree(clust, groups[i]), dummy=integer(nrow(data)))
-#   AICsum[i] = sum(AIC(manyany("glm", data, data~alloc, data=Xdata,
-#                               family=tweedie(var.power=1.2, link.power=0), var.power=1.2, composition=FALSE)))
-# }
