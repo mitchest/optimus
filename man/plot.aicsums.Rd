@@ -4,18 +4,28 @@
 \alias{plot.aicsums}
 \title{Plot sum-of-AIC results}
 \usage{
-\method{plot}{aicsums}(x, ...)
+\method{plot}{aicsums}(x, col = "black", pch = 16, ...)
 }
 \arguments{
 \item{x}{an object of class \code{aicsums}, as produced by \code{\link[optimus]{find_optimal}}.}
 
+\item{col}{point colour}
+
+\item{pch}{point type}
+
 \item{...}{additional arguments to pass to \code{\link[graphics]{plot}}.}
+}
+\value{
+A plot is drawn on the current graphics device
 }
 \description{
 S3 \code{\link{plot}} method for sum-of-AIC reuslts from \code{\link[optimus]{find_optimal}}.
 }
 \examples{
 
-## Example of a find_optimal() call and subsequent plot, and how to interpret
+## see ?find_optimal()
+}
+\author{
+Mitchell Lyons
 }
 
