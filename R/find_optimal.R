@@ -38,45 +38,56 @@
 #'
 #' @references Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 #'
-#' @seealso \code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, \code{\link[optimus]{merge_clusters}}, S3 residual plotting function for the optimal solution, a characteristic species function for the optimal solution
+#' @seealso \code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, \code{\link[optimus]{merge_clusters}}, S3 for residual plots (at some stage)
 #'
 #' @keywords optimal, partition, partitioning
 #'
 #' @examples
 #'
+#' ## Prep the 'swamps' data
+#' ## ======================
+#'
+#' data(swamps) # see ?swamps
+#' swamps <- swamps[,-1]
+#'
 #' ## Assess clustering solutions using cutree() method
 #' ## =================================================
 #'
-#' ## load data, remove transect column and cluster
-#' data(swamps)
-#' swamps <- swamps[,-1]
 #' ## perhaps not the best clustering option, but this is base R
-#' swamps_clust <- hclust(d = dist(x = swamps, method = "minkowski"),
-#'                        method = "average")
+#' swamps_hclust <- hclust(d = dist(x = log1p(swamps), method = "canberra"),
+#'                        method = "complete")
 #'
-#' ## calculate sum-of-AIC values for 2:40 clusters
-#' swamps_clust_aics <- find_optimal(data = swamps, clustering = swamps_clust,
+#' ## calculate sum-of-AIC values for 2:40 clusters, using the hclust() output
+#' swamps_hclust_aics <- find_optimal(data = swamps, clustering = swamps_hclust,
 #' family = "poisson", cutreeLevels = 2:40)
 #'
-#' ## plot - the lowest values wins it
-#' ## Poisson is probably not the right choice for this data set though,
-#' ## since data are frequency counts
-#' plot(swamps_clust_aics)
+#' ## Note here that the data passed to find_optimal() was actually NOT the
+#' ## data used for clustering (transform/distance), rather it was the
+#' ## original abundance (response) data of interest
 #'
-#' ## Let's try binomial regression instead, since data are frequency counts
-#' swamps_prop <- swamps / 30 # convert to proportion
-#'
-#' ## calculate sum-of-AIC values for 2:40 clusters
-#' ## Note here that the data does NOT have to be the data used for clustering,
-#' ## rather it should be the abundance (or other response type) data of interest
-#' swamps_clust_aics <- find_optimal(data = swamps_prop, clustering = swamps_clust,
-#' family = "binomial", K=30, cutreeLevels = 2:40)
-#'
-#' ## plot - the lowest values wins it
-#' plot(swamps_clust_aics)
+#' ## plot - lower sum-of-AIC valuea indicate 'better' clustering
+#' plot(swamps_hclust_aics)
 #'
 #'
-#' ## 2) supplying a list of clustering solutions, from kmeans and from cutree(h=)
+#' \dontrun{
+#' ## Assess clustering solutions by supplying a list of solutions
+#' ## ============================================================
+#'
+#' ## again, we probably wouldn't do this, but for illustrative purposes
+#' ## note that we are generating a list of solutions this time
+#' swamps_kmeans <- lapply(X = 2:40,
+#' FUN = function(x, data) {stats::kmeans(x = data, centers = x)$cluster},
+#' data = swamps)
+#'
+#' ## calculate sum-of-AIC values for the list of clustering solutions
+#' swamps_kmeans_aics <- find_optimal(data = swamps, clustering = swamps_kmeans,
+#' family = "poisson") # note cutreeLevels= argument is not needed
+#'
+#' plot(swamps_kmeans_aics)
+#' }
+#'
+#' ## See vignettes for some more 'ecologically sensible' examples
+#' ## ============================================================
 #'
 #' @export
 

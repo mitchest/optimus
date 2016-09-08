@@ -40,7 +40,36 @@
 #' @keywords merging, reallocation, iterative, pairwise
 #'
 #' @examples
-#' # example showing a merge, and then running find_optimal() to plot it out (comparing to the hclust heirarchy)
+#'
+#' \dontrun{
+#' ## Prep the 'swamps' data
+#' ## ======================
+#'
+#' data(swamps) # see ?swamps
+#' swamps <- swamps[,-1]
+#'
+#' ## Merge via AIC and compare to hclust heirarchy
+#' ## =============================================
+#'
+#' ## perhaps not the best clustering option, but this is base R
+#' swamps_hclust <- hclust(d = dist(x = log1p(swamps), method = "canberra"),
+#'                        method = "complete")
+#'
+#' ## generate iteratively merged clustering solutions, based on sum-of-AIC
+#' clustering_aicmerge <- merge_clusters(swamps, cutree(tree = swamps_hclust, k = 30),
+#' family = "poisson", n.iter = 20)
+#'
+#' ## compare to hclust heirarchy
+#'
+#' optimal_aicmerge <- find_optimal(data = swamps, clustering = clustering_aicmerge,
+#' family = "poisson")
+#'
+#' optimal_hclust <- find_optimal(data = swamps, clustering = swamps_hclust,
+#' family = "poisson", cutreeLevels = 10:30))
+#'
+#' plot(optimal_aicmerge)
+#' points(optimal_hclust, col = "red", pch = 16)
+#' }
 #'
 #' @export
 

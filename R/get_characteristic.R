@@ -33,32 +33,33 @@
 #'
 #' @references Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 #'
-#' @seealso \code{\link[optimus]{find_optimal}}, S3 print function for 'daic' class, S3 residual plotting function
+#' @seealso \code{\link[optimus]{find_optimal}}, S3 for residual plots (at some stage)
 #'
 #' @keywords characteristic, diagnostic, indicator
 #'
 #' @examples
 #'
+#' ## Prep the 'swamps' data
+#' ## ======================
+#'
+#' data(swamps) # see ?swamps
+#' swamps <- swamps[,-1]
+#'
 #' ## Find characteristic species in a classificaiton of the swamps data
 #' ## ==================================================================
 #'
-#' ## load data, remove transect column and cluster
-#' data(swamps)
-#' swamps <- swamps[,-1]
 #' ## perhaps not the best clustering option, but this is base R
-#' swamps_clust <- hclust(d = dist(x = swamps, method = "minkowski"),
-#'                        method = "average")
+#' swamps_hclust <- hclust(d = dist(x = log1p(swamps), method = "canberra"),
+#'                        method = "complete")
 #'
 #' # calculate delta aics for
-#' swamps_daic <- get_characteristic(data = swamps, clustering = cutree(swamps_clust, 10),
-#' family = "poisson")
-#' swamps_daic
+#' swamps_daic <- get_characteristic(data = swamps,
+#' clustering = cutree(tree = swamps_hclust, k = 10), family = "poisson")
 #'
-#' # print(swamps_clust_aics)
+#' head(swamps_daic, 10)
 #'
-#'
-#' ## 2) find an optimal partioning with find_optimal(),
-#' ## then call get_characteristic() on it
+#' ## See vignettes for some more 'ecologically sensible' examples
+#' ## ============================================================
 #'
 #' @export
 

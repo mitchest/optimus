@@ -48,7 +48,36 @@ At present, \code{merge_clusters} supports the following error distributions for
 Gaussian LMs should be used for 'normal' data. Negative Binomial and Poisson GLMs shold be used for count data. Binomial GLMs should be used for binary and presence/absence data (when \code{K=1}), or trials data (e.g. frequency scores). If Binomial regression is being used with \code{K>1}, then \code{data} should be numerical values between 0 and 1, interpreted as the proportion of successful cases, where the total number of cases is given by \code{K} (see Details in \code{\link[stats]{family}}). Ordinal regression should be used for ordinal data, for example, cover-abundance scores. LMs fit via \code{\link[mvabund]{manylm}}; GLMs fit via \code{\link[mvabund]{manyglm}}; proportional odds model fit via \code{\link[ordinal]{clm}}.
 }
 \examples{
-# example showing a merge, and then running find_optimal() to plot it out (comparing to the hclust heirarchy)
+
+\dontrun{
+## Prep the 'swamps' data
+## ======================
+
+data(swamps) # see ?swamps
+swamps <- swamps[,-1]
+
+## Merge via AIC and compare to hclust heirarchy
+## =============================================
+
+## perhaps not the best clustering option, but this is base R
+swamps_hclust <- hclust(d = dist(x = log1p(swamps), method = "canberra"),
+                       method = "complete")
+
+## generate iteratively merged clustering solutions, based on sum-of-AIC
+clustering_aicmerge <- merge_clusters(swamps, cutree(tree = swamps_hclust, k = 30),
+family = "poisson", n.iter = 20)
+
+## compare to hclust heirarchy
+
+optimal_aicmerge <- find_optimal(data = swamps, clustering = clustering_aicmerge,
+family = "poisson")
+
+optimal_hclust <- find_optimal(data = swamps, clustering = swamps_hclust,
+family = "poisson", cutreeLevels = 10:30))
+
+plot(optimal_aicmerge)
+points(optimal_hclust, col = "red", pch = 16)
+}
 
 }
 \author{
