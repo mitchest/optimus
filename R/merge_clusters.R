@@ -52,7 +52,6 @@ merge_clusters <- function(data, clustering, family, n.iter = NULL, K = 1, quiet
 
   # test specified family is supported
   supported_fams <- c("gaussian", "negative.binomial", "poisson", "binomial", "ordinal")
-  supported_fams <- c("negative.binomial")
   if (!family %in% supported_fams) {
     stop("family specified is not valid (typo?) or not yet supported, please choose from: ",
                 paste(supported_fams, collapse = ", "))

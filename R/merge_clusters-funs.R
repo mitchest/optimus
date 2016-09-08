@@ -73,20 +73,49 @@ pairwise_fits <- function(data, cluster_labels, pairs, family, K) {
     combined_cluster <- as.factor(c(as.character(target_cluster), as.character(test_cluster)))
 
     # fit models
-
-    #############
-    ####### -> don't forget to update supported_fams()
-
+    if (family == "gaussian") {
+      nclusters <- length(unique(combined_cluster)) # not really important, since it's a constant, but leaving here for consistency
+      combined_data <- mvabund::mvabund(combined_data)
+      fit_rss <- apply(X = mvabund::manylm(formula = combined_data ~ as.factor(combined_cluster))$residuals^2,
+                       MARGIN = 2, FUN = sum)
+      fit_aic <- sum( (2 * (nclusters + 2)) + (nrow(combined_data) * log(fit_rss)) )
+      null_rss <- apply(X = mvabund::manylm(formula = combined_data ~ 1)$residuals^2,
+                        MARGIN = 2, FUN = sum)
+      null_aic <- sum( (2 * (nclusters + 2)) + (nrow(combined_data) * log(null_rss)) )
+    }
 
     if (family == "negative.binomial") {
       combined_data <- mvabund::mvabund(combined_data)
-      fit <- mvabund::manyglm(combined_data ~ combined_cluster, family="negative.binomial")
-      fit_null <- mvabund::manyglm(combined_data ~ 1, family="negative.binomial")
+      fit_aic <- mvabund::manyglm(combined_data ~ combined_cluster, family="negative.binomial")$AICsum
+      null_aic <- mvabund::manyglm(combined_data ~ 1, family="negative.binomial")$AICsum
+    }
+
+    if (family == "poisson") {
+      combined_data <- mvabund::mvabund(combined_data)
+      fit_aic <- mvabund::manyglm(combined_data ~ combined_cluster, family="poisson")$AICsum
+      null_aic <- mvabund::manyglm(combined_data ~ 1, family="poisson")$AICsum
+    }
+
+    if (family == "binomial") {
+      combined_data <- mvabund::mvabund(combined_data)
+      if (K == 1) {
+        fit_aic <- mvabund::manyglm(combined_data ~ combined_cluster, family=stats::binomial(link = "cloglog"))$AICsum
+        null_aic <- mvabund::manyglm(combined_data ~ 1, family=stats::binomial(link = "cloglog"))$AICsum
+      } else {
+        fit_aic <- mvabund::manyglm(combined_data ~ combined_cluster, family=stats::binomial(link = "logit"))$AICsum
+        null_aic <- mvabund::manyglm(combined_data ~ 1, family=stats::binomial(link = "logit"))$AICsum
+      }
+    }
+
+    if (family == "ordinal") {
+      combined_data <- data.frame(lapply(combined_data, as.factor))
+      fit_aic <- sum( manyclm_naked(responses = combined_data, predictor = as.factor(combined_cluster)) )
+      null_aic <- sum (manyclm_naked(responses = combined_data, predictor = 1) )
     }
 
     # store results
     nvars[i] <- ncol(combined_data)
-    dAIC_sum[i] <- fit_null$AICsum - fit$AICsum
+    dAIC_sum[i] <- null_aic - fit_aic
     # # calculate % of species for which dAIC (from null) is >n
     # dAIC <- fit_null$aic-fit$aic
     # rank[i] <- sum(dAIC>4)/length(dAIC)
