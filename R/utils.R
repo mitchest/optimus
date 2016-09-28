@@ -40,3 +40,11 @@ manyclm_sum <- function(responses, clusters) {
   sum_clm_aics <- function(x, clusters) {stats::AIC(ordinal::clm(formula = x ~ clusters))}
   sum(unlist(lapply(X = responses, FUN = sum_clm_aics, clusters = clusters)))
 }
+
+sort_char_coef <- function(x, coefs) {
+  dat <- setNames(as.numeric(coefs[x, ]), names(coefs[x, ]))
+  sorted_coefs <- sort(dat[dat >= 0], decreasing = TRUE)
+  data.frame(variables = names(sorted_coefs),
+             coef_value = sorted_coefs,
+             stringsAsFactors = FALSE)
+}
