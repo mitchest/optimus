@@ -20,7 +20,7 @@
 #'   \item Ordinal (Proportional odds model with logit link)
 #' }
 #'
-#' Gaussian LMs should be used for 'normal' data. Negative Binomial and Poisson GLMs shold be used for count data. Binomial GLMs should be used for binary and presence/absence data (when \code{K=1}), or trials data (e.g. frequency scores). If Binomial regression is being used with \code{K>1}, then \code{data} should be numerical values between 0 and 1, interpreted as the proportion of successful cases, where the total number of cases is given by \code{K} (see Details in \code{\link[stats]{family}}). Ordinal regression should be used for ordinal data, for example, cover-abundance scores. LMs fit via \code{\link[mvabund]{manylm}}; GLMs fit via \code{\link[mvabund]{manyglm}}; proportional odds model fit via \code{\link[ordinal]{clm}}.
+#' Gaussian LMs should be used for 'normal' data. Negative Binomial and Poisson GLMs shold be used for count data. Binomial GLMs should be used for binary and presence/absence data (when \code{K=1}), or trials data (e.g. frequency scores). If Binomial regression is being used with \code{K>1}, then \code{data} should be numerical values between 0 and 1, interpreted as the proportion of successful cases, where the total number of cases is given by \code{K} (see Details in \code{\link[stats]{family}}). Ordinal regression should be used for ordinal data, for example, cover-abundance scores. For ordinal regression, data should be supplied as either 1) factors, with the appropriate ordinal level order specified (see \code{\link[base]{levels}}) or 2) numeric, which will be coerced into a factor with levels ordered in numerical order (e.g. cover-abundance/numeric response scores). LMs fit via \code{\link[mvabund]{manylm}}; GLMs fit via \code{\link[mvabund]{manyglm}}; proportional odds model fit via \code{\link[ordinal]{clm}}.
 #'
 #' @return a list containing the clustering solution (vector) at each merge iteration. The object is of class \code{dsumaic}, and can be directly passed to \code{\link[optimus]{find_optimal}}.
 #'
@@ -89,6 +89,18 @@ merge_clusters <- function(data, clustering, family, n.iter = NULL, K = 1, quiet
   # test multivar data input (i.e. is char/num/factor)
   if (family != "ordinal" & any(unlist(lapply(data, class)) %in% c("factor", "character"))) {
     stop("some of the input data are factors or characters, are you looking for ordinal regression?")
+  }
+
+  if (family == "ordinal") {
+    if (all(unlist(lapply(data, is.factor)))) {
+      message("All data are factors, ordinal regression will use factor levels as is - ensure they are correct")
+    }
+    if (!all(unlist(lapply(data, is.factor))) & any(unlist(lapply(data, is.factor)))) {
+      stop("Some data are factors, some are not - don't know how to proceed with ordinal regression")
+    }
+    if (all(unlist(lapply(data, is.numeric)))) {
+      message("All data are numeric - will coerce to factor and levels will be in numeric order")
+    }
   }
 
   # as.character, to be safe

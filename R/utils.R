@@ -41,10 +41,16 @@ manyclm_sum <- function(responses, clusters) {
   sum(unlist(lapply(X = responses, FUN = sum_clm_aics, clusters = clusters)))
 }
 
+# rank variable coefficients
 sort_char_coef <- function(x, coefs) {
   dat <- setNames(as.numeric(coefs[x, ]), names(coefs[x, ]))
   sorted_coefs <- sort(dat[dat >= 0], decreasing = TRUE)
   data.frame(variables = names(sorted_coefs),
              coef_value = sorted_coefs,
              stringsAsFactors = FALSE)
+}
+
+# turn ordinal data into binary (based on first level of factor)
+ordinal_to_binom <- function(x) {
+  ifelse(x == levels(x)[1], 1, 0)
 }

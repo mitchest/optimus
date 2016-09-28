@@ -93,6 +93,7 @@ binomial_char <- function(clusterSolution, data, K, type) {
 
 # ordinal regression via clm
 ordinal_char <- function(clusterSolution, data, type) {
+  data <- data.frame(lapply(data, as.factor))
   clusterSolution <- as.factor(clusterSolution)
   # per cluster coeffs are not well defined for cumulative link models
   # there's a threshold coefficient for each level of the ordinal variable, and then a coef for all the remaining covariate levels
@@ -100,12 +101,11 @@ ordinal_char <- function(clusterSolution, data, type) {
   # reverting to pres/abs model until the best approach is decided
   if (type == "per.cluster") {
     message("Per-cluster characteristic variables not well defined for cumulative link models.")
-    message("Reverting to logistic regression for the mean time...")
-    data <- ifelse(data > 0, 1, 0)
+    message("Reverting to logistic regression for the mean time - first level of the factor will be used as the threshold. If that's not suitable, recode to binary youeself, then choose the binomial family")
+    data = data.frame(lapply(X = data, FUN = ordinal_to_binom))
     ret <- binomial_char(clusterSolution = clusterSolution, data = data, K = 1, type = "per.cluster")
   }
   if (type == "global") {
-    data <- data.frame(lapply(data, as.factor))
     fit <- manyclm(responses = data, predictor = clusterSolution)
     fit_null <- manyclm(responses = data, predictor = 1)
     daic <- data.frame(sort(fit_null - fit, decreasing = TRUE))
@@ -114,4 +114,3 @@ ordinal_char <- function(clusterSolution, data, type) {
   }
   ret
 }
-
