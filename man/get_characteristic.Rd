@@ -60,11 +60,21 @@ swamps <- swamps[,-1]
 swamps_hclust <- hclust(d = dist(x = log1p(swamps), method = "canberra"),
                        method = "complete")
 
-# calculate delta aics for
-swamps_daic <- get_characteristic(data = swamps,
-clustering = cutree(tree = swamps_hclust, k = 10), family = "poisson")
+# calculate per cluster characteristic species
+swamps_char <- get_characteristic(data = swamps,
+clustering = cutree(tree = swamps_hclust, k = 10), family = "poisson",
+type = "per.cluster")
 
-head(swamps_daic, 10)
+# look at the top 10 characteristic species for cluster 1
+head(swamps_char[[1]], 10)
+
+# calculate global characteristic species
+swamps_char <- get_characteristic(data = swamps,
+clustering = cutree(tree = swamps_hclust, k = 10), family = "poisson",
+type = "global")
+
+# look at the top 10 characteristic species for the whole classification
+head(swamps_char, 10)
 
 ## See vignettes for some more 'ecologically sensible' examples
 ## ============================================================
