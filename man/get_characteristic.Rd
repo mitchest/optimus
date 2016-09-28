@@ -73,7 +73,7 @@ swamps_char <- get_characteristic(data = swamps,
 clustering = cutree(tree = swamps_hclust, k = 10), family = "poisson",
 type = "global")
 
-# look at the top 10 characteristic species for the whole classification
+# top 10 characteristic species for the whole classification
 head(swamps_char, 10)
 
 ## See vignettes for some more 'ecologically sensible' examples
