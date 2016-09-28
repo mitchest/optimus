@@ -6,7 +6,15 @@
 ####### ---> need to check whether the RSS methods is OK for AIC for least squares out of manylm???? Looks like it overfits??
 gaussian_char <- function(clusterSolution, data, nclusters, type) {
   data <- mvabund::mvabund(data)
-  fit_rss <- apply(X = mvabund::manylm(formula = data ~ as.factor(clusterSolution))$residuals^2,
+  clusterSolution <- as.factor(clusterSolution)
+  if (type == "per.cluster") {
+    fit <- mvabund::manylm(formula = data ~ clusterSolution)
+    fit_coefs <- as.data.frame(fit$coefficients)
+    cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
+    ret <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
+  }
+  if (type == "global") {
+  fit_rss <- apply(X = mvabund::manylm(formula = data ~ clusterSolution)$residuals^2,
                   MARGIN = 2, FUN = sum)
   fit_aic <- (2 * (nclusters + 2)) + (nrow(data) * log(fit_rss))
   null_rss <- apply(X = mvabund::manylm(formula = data ~ 1)$residuals^2,
@@ -15,6 +23,8 @@ gaussian_char <- function(clusterSolution, data, nclusters, type) {
   daic <- data.frame(sort(null_aic - fit_aic, decreasing = TRUE))
   data.frame(variables = row.names(daic),
              dAIC = daic$sort)
+  }
+  ret
 }
 
 # negative binomal glms via mvabund
@@ -24,7 +34,7 @@ negbin_char <- function(clusterSolution, data, type) {
   fit <- mvabund::manyglm(formula = data ~ clusterSolution-1, family = "negative.binomial") # -1 for means parameterisaiton
   if (type == "per.cluster") {
     fit_coefs <- as.data.frame(fit$coefficients)
-    cluster_names <- setNames(row.names(fit_coefs), row.names(fit_coefs))
+    cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
     ret <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
   }
   if (type == "global") {
@@ -43,7 +53,7 @@ poisson_char <- function(clusterSolution, data, type) {
   fit <- mvabund::manyglm(formula = data ~ clusterSolution-1, family = "poisson")
   if (type == "per.cluster") {
     fit_coefs <- as.data.frame(fit$coefficients)
-    cluster_names <- setNames(row.names(fit_coefs), row.names(fit_coefs))
+    cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
     ret <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
   }
   if (type == "global") {
@@ -64,7 +74,7 @@ binomial_char <- function(clusterSolution, data, K, type) {
     fit <- mvabund::manyglm(formula = data ~ clusterSolution-1, family = stats::binomial(link='cloglog'), K = K)
     if (type == "per.cluster") {
       fit_coefs <- as.data.frame(fit$coefficients)
-      cluster_names <- setNames(row.names(fit_coefs), row.names(fit_coefs))
+      cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
       ret <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
     }
     if (type == "global") {
@@ -78,7 +88,7 @@ binomial_char <- function(clusterSolution, data, K, type) {
     fit <- mvabund::manyglm(formula = data ~ clusterSolution-1, family = stats::binomial(link='logit'), K = K)
     if (type == "per.cluster") {
       fit_coefs <- as.data.frame(fit$coefficients)
-      cluster_names <- setNames(row.names(fit_coefs), row.names(fit_coefs))
+      cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
       ret <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
     }
     if (type == "global") {
