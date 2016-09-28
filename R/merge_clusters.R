@@ -60,7 +60,6 @@
 #' family = "poisson", n.iter = 20)
 #'
 #' ## compare to hclust heirarchy
-#'
 #' optimal_aicmerge <- find_optimal(data = swamps, clustering = clustering_aicmerge,
 #' family = "poisson")
 #'
