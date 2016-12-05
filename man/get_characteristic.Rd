@@ -16,7 +16,7 @@ get_characteristic(data, clustering, family, type = "per.cluster",
 
 \item{type}{a character string, one of \code{"per.cluster"} or \code{"global"}, denoting the type of characteristic variables (species). See Details.}
 
-\item{signif}{logical, denoting whether \emph{significance} should be returned also when \code{"type=per.cluster"}. See Details. Minimal additional overhead is required if \code{TRUE}.}
+\item{signif}{logical, denoting whether \emph{significance} should be returned also when \code{"type=per.cluster"}. Ignored if \code{"type=global"}. See Details. Minimal additional overhead is required if \code{TRUE}.}
 
 \item{K}{number of trials in binomial regression. By default, K=1 for presence-absence data (with cloglog link).}
 }
