@@ -8,10 +8,28 @@ gaussian_char <- function(clusterSolution, data, nclusters, type, signif) {
   data <- mvabund::mvabund(data)
   clusterSolution <- as.factor(clusterSolution)
   if (type == "per.cluster") {
-    fit <- mvabund::manylm(formula = data ~ clusterSolution)
+    fit <- mvabund::manylm(formula = data ~ clusterSolution-1)
     fit_coefs <- as.data.frame(fit$coefficients)
     cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
-    ret <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
+    sorted_coefs <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
+    if (signif) {
+      fit_rss <- apply(X = mvabund::manylm(formula = data ~ clusterSolution)$residuals^2,
+                       MARGIN = 2, FUN = sum)
+      fit_aic <- (2 * (nclusters + 2)) + (nrow(data) * log(fit_rss))
+      null_rss <- apply(X = mvabund::manylm(formula = data ~ 1)$residuals^2,
+                        MARGIN = 2, FUN = sum)
+      null_aic <- (2 * (nclusters + 2)) + (nrow(data) * log(null_rss))
+      daic <- data.frame(sort(null_aic - fit_aic, decreasing = TRUE))
+      daics <- data.frame(variables = row.names(daic),
+                        dAIC = daic$sort, stringsAsFactors = F)
+      stderr <- as.data.frame(t(matrix(sqrt(diag(vcov(fit))), nrow = nclusters, byrow = T)))
+      names(stderr) <- cluster_names
+      rownames(stderr) <-names(fit_coefs)
+      ret <- lapply(X = as.list(cluster_names), FUN = match_daic_stderr,
+                    coefs = sorted_coefs, daics = daics, stderr = stderr)
+    } else {
+      ret <- sorted_coefs
+    }
   }
   if (type == "global") {
   fit_rss <- apply(X = mvabund::manylm(formula = data ~ clusterSolution)$residuals^2,
@@ -21,8 +39,8 @@ gaussian_char <- function(clusterSolution, data, nclusters, type, signif) {
                    MARGIN = 2, FUN = sum)
   null_aic <- (2 * (nclusters + 2)) + (nrow(data) * log(null_rss))
   daic <- data.frame(sort(null_aic - fit_aic, decreasing = TRUE))
-  data.frame(variables = row.names(daic),
-             dAIC = daic$sort)
+  ret <- data.frame(variables = row.names(daic),
+             dAIC = daic$sort, stringsAsFactors = F)
   }
   ret
 }
@@ -33,18 +51,20 @@ negbin_char <- function(clusterSolution, data, type, signif) {
   clusterSolution <- as.factor(clusterSolution)
   fit <- mvabund::manyglm(formula = data ~ clusterSolution-1, family = "negative.binomial") # -1 for means parameterisaiton
   if (type == "per.cluster") {
+    fit_coefs <- as.data.frame(fit$coefficients)
+    cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
+    sorted_coefs <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
     if (signif) {
       fit_null <- mvabund::manyglm(formula = data ~ 1, family = "negative.binomial")
       daic <- data.frame(daic = fit_null$aic - fit$aic)
       daics <- data.frame(variables = row.names(daic),
                           dAIC = daic, stringsAsFactors = F)
       stderr <- as.data.frame(t(fit$stderr.coefficients))
+      ret <- lapply(X = as.list(cluster_names), FUN = match_daic_stderr,
+                    coefs = sorted_coefs, daics = daics, stderr = stderr)
+    } else {
+      ret <- sorted_coefs
     }
-    fit_coefs <- as.data.frame(fit$coefficients)
-    cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
-    sorted_coefs <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
-    ret <- lapply(X = as.list(cluster_names), FUN = match_daic_stderr,
-                  coefs = sorted_coefs, daics = daics, stderr = stderr)
   }
   if (type == "global") {
     fit_null <- mvabund::manyglm(formula = data ~ 1, family = "negative.binomial")
@@ -59,11 +79,22 @@ negbin_char <- function(clusterSolution, data, type, signif) {
 poisson_char <- function(clusterSolution, data, type, signif) {
   data <- mvabund::mvabund(data)
   clusterSolution <- as.factor(clusterSolution)
-  fit <- mvabund::manyglm(formula = data ~ clusterSolution-1, family = "poisson")
+  fit <- mvabund::manyglm(formula = data ~ clusterSolution-1, family = "poisson") # -1 for means parameterisaiton
   if (type == "per.cluster") {
     fit_coefs <- as.data.frame(fit$coefficients)
     cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
-    ret <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
+    sorted_coefs <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
+    if (signif) {
+      fit_null <- mvabund::manyglm(formula = data ~ 1, family = "negative.binomial")
+      daic <- data.frame(daic = fit_null$aic - fit$aic)
+      daics <- data.frame(variables = row.names(daic),
+                          dAIC = daic, stringsAsFactors = F)
+      stderr <- as.data.frame(t(fit$stderr.coefficients))
+      ret <- lapply(X = as.list(cluster_names), FUN = match_daic_stderr,
+                    coefs = sorted_coefs, daics = daics, stderr = stderr)
+    } else {
+      ret <- sorted_coefs
+    }
   }
   if (type == "global") {
     fit_null <- mvabund::manyglm(formula = data ~ 1, family = "poisson")
@@ -84,7 +115,18 @@ binomial_char <- function(clusterSolution, data, K, type, signif) {
     if (type == "per.cluster") {
       fit_coefs <- as.data.frame(fit$coefficients)
       cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
-      ret <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
+      sorted_coefs <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
+      if (signif) {
+        fit_null <- mvabund::manyglm(formula = data ~ 1, family = stats::binomial(link='cloglog'), K = K)
+        daic <- data.frame(daic = fit_null$aic - fit$aic)
+        daics <- data.frame(variables = row.names(daic),
+                            dAIC = daic, stringsAsFactors = F)
+        stderr <- as.data.frame(t(fit$stderr.coefficients))
+        ret <- lapply(X = as.list(cluster_names), FUN = match_daic_stderr,
+                      coefs = sorted_coefs, daics = daics, stderr = stderr)
+      } else {
+        ret <- sorted_coefs
+      }
     }
     if (type == "global") {
       fit_null <- mvabund::manyglm(formula = data ~ 1, family = stats::binomial(link='cloglog'), K = K)
@@ -98,7 +140,18 @@ binomial_char <- function(clusterSolution, data, K, type, signif) {
     if (type == "per.cluster") {
       fit_coefs <- as.data.frame(fit$coefficients)
       cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
-      ret <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
+      sorted_coefs <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
+      if (signif) {
+        fit_null <- mvabund::manyglm(formula = data ~ 1, family = stats::binomial(link='logit'), K = K)
+        daic <- data.frame(daic = fit_null$aic - fit$aic)
+        daics <- data.frame(variables = row.names(daic),
+                            dAIC = daic, stringsAsFactors = F)
+        stderr <- as.data.frame(t(fit$stderr.coefficients))
+        ret <- lapply(X = as.list(cluster_names), FUN = match_daic_stderr,
+                      coefs = sorted_coefs, daics = daics, stderr = stderr)
+      } else {
+        ret <- sorted_coefs
+      }
     }
     if (type == "global") {
       fit_null <- mvabund::manyglm(formula = data ~ 1, family = stats::binomial(link='logit'), K = K)
