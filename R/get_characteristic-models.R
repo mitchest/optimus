@@ -22,7 +22,7 @@ gaussian_char <- function(clusterSolution, data, nclusters, type, signif) {
       daic <- data.frame(sort(null_aic - fit_aic, decreasing = TRUE))
       daics <- data.frame(variables = row.names(daic),
                         dAIC = daic$sort, stringsAsFactors = F)
-      stderr <- as.data.frame(t(matrix(sqrt(diag(vcov(fit))), nrow = nclusters, byrow = T)))
+      stderr <- as.data.frame(t(matrix(sqrt(diag(stats::vcov(fit))), nrow = nclusters, byrow = T)))
       names(stderr) <- cluster_names
       rownames(stderr) <-names(fit_coefs)
       ret <- lapply(X = as.list(cluster_names), FUN = match_daic_stderr,
