@@ -27,9 +27,9 @@
 #' Attributes for the data frame are:
 #'
 #' \describe{
-##'   \item{\code{family}}{ which error distribution was used for modelling, see Arguments}
-##'   \item{\code{K}}{ number of cases for Binomial regression, see Arguments}
-##' }
+#'   \item{\code{family}}{ which error distribution was used for modelling, see Arguments}
+#'   \item{\code{K}}{ number of cases for Binomial regression, see Arguments}
+#' }
 #'
 #' @author Mitchell Lyons
 #'
