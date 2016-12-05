@@ -68,7 +68,6 @@ clustering_aicmerge <- merge_clusters(swamps, cutree(tree = swamps_hclust, k = 3
 family = "poisson", n.iter = 20)
 
 ## compare to hclust heirarchy
-
 optimal_aicmerge <- find_optimal(data = swamps, clustering = clustering_aicmerge,
 family = "poisson")
 

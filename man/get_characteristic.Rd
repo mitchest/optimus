@@ -2,9 +2,10 @@
 % Please edit documentation in R/get_characteristic.R
 \name{get_characteristic}
 \alias{get_characteristic}
-\title{Determine the characteristicvariables (e.g. species) of a clustering solution (e.g. classificaiton)}
+\title{Determine the characteristic variables (e.g. species) of a clustering solution (e.g. classificaiton)}
 \usage{
-get_characteristic(data, clustering, family, type = "per.cluster", K = 1)
+get_characteristic(data, clustering, family, type = "per.cluster",
+  signif = TRUE, K = 1)
 }
 \arguments{
 \item{data}{a data frame (or object that can be coerced by \code{\link[base]{as.data.frame}} containing the "raw" multivariate data. This is not necessarily the data used by the clustering algorithm - it is the data on which you are testing the predictive ablity of the clustering solution.}
@@ -13,12 +14,14 @@ get_characteristic(data, clustering, family, type = "per.cluster", K = 1)
 
 \item{family}{a character string denoting the error distribution to be used for model fitting. The options are similar to those in \code{\link[stats]{family}}, but are more limited - see Details.}
 
-\item{type}{a character string, one of \code{"per.cluster"} or \code{"global"}, denoting the type of characteristic species. See Details.}
+\item{type}{a character string, one of \code{"per.cluster"} or \code{"global"}, denoting the type of characteristic variables (species). See Details.}
+
+\item{signif}{logical, denoting whether \emph{significance} should be returned also when \code{"type=per.cluster"}. See Details. Minimal additional overhead is required if \code{TRUE}.}
 
 \item{K}{number of trials in binomial regression. By default, K=1 for presence-absence data (with cloglog link).}
 }
 \value{
-either a list of sorted characteristic variables for each cluster (of class \code{clustcoefs}) or a data frame containing the delta AIC values for each variable (of class \code{daic}).
+either a list of sorted characteristic variables for each cluster (of class \code{perclustchar}) or a data frame containing the delta AIC values for each variable (of class \code{globalchar}). If \code{signif=} is not \code{"none"}, then the corresponding significance metrics are appended.
 
 Attributes for the object are:
 
@@ -32,7 +35,7 @@ Attributes for the object are:
 \code{get_characteristic} takes a clustering solution, fits models based on the underlying multivariate data, and determines 'important' variables for the clustering solution. In Ecology, particularly vegetation science, this is the process of determining characteristic (or diagnostic/indicator) species of a classification.
 }
 \details{
-\code{get_characteristic} is built on the premise that a \emph{good} clustering solution (i.e. a classification) should provide information about the composition and abundance of the multivariate data it is classifying. A natural way to formalize this is with a predictive model, where group membership (clusters) is the predictor, and the multivariate data (site by variables matrix) is the response. \code{get_characteristic} fits linear models to each variable. If \code{type = "per.cluster"} the coefficients corresponding to each level of the clustering solution for eac variable are used to define the characteristic variables. If \code{type = "global"}, delta AIC (that is, to the corresponding null model) for each varaible is used to define the characteristic variables. We loosely define that the larger the coefficient or delta AIC, the \emph{more} characteristic it is. Lyons et al. (2016) provides background, a detailed description of the methodology, and application of delta AIC on both real and simulated ecological multivariate abundance data.
+\code{get_characteristic} is built on the premise that a \emph{good} clustering solution (i.e. a classification) should provide information about the composition and abundance of the multivariate data it is classifying. A natural way to formalize this is with a predictive model, where group membership (clusters) is the predictor, and the multivariate data (site by variables matrix) is the response. \code{get_characteristic} fits linear models to each variable. If \code{type = "per.cluster"} the coefficients corresponding to each level of the clustering solution for each variable are used to define the characteristic variables for each cluster level. If \code{type = "global"}, characteristic variables are determined for the overall classification. If \code{signif = TRUE}, delta AIC (that is, to the corresponding null model) and the coefficient standard errors are also retuend with the per-cluster characteristic variables. We loosely define that the larger the coefficient (with larger delta AIC values and smaller standard errors guiding \emph{significance}), the \emph{more} characteristic that varaible (species) is. Lyons et al. (2016) provides background, a detailed description of the methodology, and application of delta AIC on both real and simulated ecological multivariate abundance data.
 
 At present, \code{get_characteristic} supports the following error distributions for model fitting:
 \itemize{
