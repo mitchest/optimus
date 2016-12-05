@@ -4,12 +4,7 @@
 \name{swamps}
 \alias{swamps}
 \title{Dharawal National Park Upland Heath Swamps Plot Network}
-\format{A data frame with 54 rows and 171 variables:
-\describe{
-  \item{transect (first column)}{transect identifyer, that is, the name of the site (0.5 x 0.5 m quadrats)}
-  \item{remaining columns}{frequency counts (out of 30) for all vascular plant taxa; taxonomy in metadata link below}
-  ...
-}}
+\format{A data frame with 54 rows and 171 variables. The first column (\code{transect}) is the name of the site (0.5 x 0.5 m quadrats). The remaining columns contain frequency counts (out of 30) for all vascular plant taxa at the site (taxonomy in metadata link below).}
 \source{
 \url{http://www.ltern.org.au/knb/metacat?action=read&qformat=html&docid=ltern.84.15}
 }
