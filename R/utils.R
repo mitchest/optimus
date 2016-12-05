@@ -50,6 +50,15 @@ sort_char_coef <- function(x, coefs) {
              stringsAsFactors = FALSE)
 }
 
+match_daic_stderr <- function(x, coefs, daics, stderr) {
+  coefs_daics <- merge(x = coefs[[x]], y = daics, by = "variables", sort = F)
+  stderr <- stderr[,x, drop = F]
+  stderr$variables <- rownames(stderr)
+  coefs_daics_stderr <- merge(x = coefs_daics, y = stderr, by = "variables", sort = F)
+  names(coefs_daics_stderr)[4] <- "stderr"
+  coefs_daics_stderr
+}
+
 # turn ordinal data into binary (based on first level of factor)
 ordinal_to_binom <- function(x) {
   ifelse(x == levels(x)[1], 1, 0)
