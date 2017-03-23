@@ -7,34 +7,33 @@ optimus
 An R package for assessment and diagnostics of competing
 clustering solutions, using predictive models. The main intended
 use is for comparing clustering/classification solutions of
-ecological data (e.g. presence/absence, counts, ordinal scores) to
-1) find an optimal partitioning solution, 2) identify
-characteristic species and 3) refine a classification by merging
-clusters that increase predictive performance. However, in a more
-general sense, this package can do the above for any set of
-clustering solutions for i observations of j variables. More
-details on the background and theory behind using predictive models
-for classification assessment, in an ecological context, can be
-found in Lyons et al. (2016).
+ecological data (e.g. presence/absence, counts, ordinal scores) to:
+
+1) find an optimal partitioning solution  
+2) identify characteristic species and  
+3) refine a classification by merging clusters such that it
+increases predictive performance.  
+
+However, in a more general sense, this package can do the above for 
+any set of clustering solutions for i observations of j variables. 
+More details on the background and theory behind using predictive 
+models for classification assessment, in an ecological context, 
+can be found in Lyons et al. (2016).
 
 ## Development
 
 This package has just come out of 'official' development, but 
 functionality will continue to be refined and added. This is also 
 the first package I have written for public access, so there will
-inevitably be bug and issues. If you find them, please let me know
+inevitably be bugs and issues. If you find them, please let me know
 about them - either directly on github, or the contact details below.
 
 ## Installation
 
-I have not yet figured out how to host binary packages for optimus.
-If you have the correct devtools and compilers on your system,
-then you can compile the package yourself from source (on github).
-
-Honestly, the easiest way to install (until I get optimus on CRAN),
-is to use Hadley Wickham's (excellent) **devtools** package. Then
-it's easy as to install optimus within the R environment, directly
-from github. Simply install **devtools** from CRAN with
+The best way to install optimus is to use Hadley Wickham's 
+(excellent) **devtools** package - it's easy as to install optimus 
+within the R environment, directly from github. Simply install 
+**devtools** from CRAN with
 
     install.packages("devtools")
 
@@ -43,6 +42,15 @@ then call
     library(devtools)
 	devtools::install_github("mitchest/optimus")
 
+Once I stop requently making changes I will put optimus on CRAN.
+
+I have not yet figured out how to host binary packages for optimus.
+If you have the correct devtools and compilers on your system,
+then you can compile the package yourself from source (on github).  
+
+## How to use optimus?
+The vignette probably won't compile when installing from github,
+so check it out [the tutorial here](optimus-workflow.html).  
 	
 ### Contact
 

@@ -28,4 +28,7 @@ BugReports: https://github.com/mitchest/optimus/issues
 License: GPL-3 + file LICENCE
 LazyData: TRUE
 RoxygenNote: 5.0.1
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
