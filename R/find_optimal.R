@@ -86,7 +86,7 @@
 #' plot(swamps_kmeans_aics)
 #' }
 #'
-#' ## See vignettes for some more 'ecologically sensible' examples
+#' ## See vignette for more explanation than this example
 #' ## ============================================================
 #'
 #' @export
