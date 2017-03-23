@@ -42,7 +42,7 @@ At present, \code{get_characteristic} supports the following error distributions
   \item Gaussian (LM)
   \item Negative Binomial (GLM with log link)
   \item Poisson (GLM with log link)
-  \item Binomial (GLM with cloglog link for binary daya, logit link otherwise)
+  \item Binomial (GLM with cloglog link for binary data, logit link otherwise)
   \item Ordinal (Proportional odds model with logit link)
 }
 
@@ -79,7 +79,7 @@ type = "global")
 # top 10 characteristic species for the whole classification
 head(swamps_char, 10)
 
-## See vignettes for some more 'ecologically sensible' examples
+## See vignette for more explanation than this example
 ## ============================================================
 
 }
