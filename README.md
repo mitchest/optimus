@@ -50,7 +50,7 @@ then you can compile the package yourself from source (on github).
 
 ## How to use optimus?
 The vignette probably won't compile when installing from github,
-so check it out [the tutorial here](optimus-workflow.html).  
+so check it out [the tutorial here](https://rawgit.com/mitchest/optimus/master/optimus-workflow.html).  
 	
 ### Contact
 
