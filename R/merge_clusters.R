@@ -116,7 +116,7 @@ merge_clusters <- function(data, clustering, family, n.iter = NULL, K = 1, quiet
   }
 
   # pre-allocate and add in initial clustering
-  clustering_list <- vector(mode = "list", length = (nclusters - 1)) #init list
+  clustering_list <- vector(mode = "list", length = (n.iter + 1)) #init list
   clustering_list[[1]] <- cluster_labels
 
   # begin mering process
