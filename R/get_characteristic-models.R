@@ -85,7 +85,7 @@ poisson_char <- function(clusterSolution, data, type, signif) {
     cluster_names <- stats::setNames(row.names(fit_coefs), row.names(fit_coefs))
     sorted_coefs <- lapply(X = cluster_names, FUN = sort_char_coef, fit_coefs)
     if (signif) {
-      fit_null <- mvabund::manyglm(formula = data ~ 1, family = "negative.binomial")
+      fit_null <- mvabund::manyglm(formula = data ~ 1, family = "poisson")
       daic <- data.frame(daic = fit_null$aic - fit$aic)
       daics <- data.frame(variables = row.names(daic),
                           dAIC = daic, stringsAsFactors = F)
