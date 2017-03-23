@@ -20,14 +20,6 @@ More details on the background and theory behind using predictive
 models for classification assessment, in an ecological context, 
 can be found in Lyons et al. (2016).
 
-## Development
-
-This package has just come out of 'official' development, but 
-functionality will continue to be refined and added. This is also 
-the first package I have written for public access, so there will
-inevitably be bugs and issues. If you find them, please let me know
-about them - either directly on github, or the contact details below.
-
 ## Installation
 
 The best way to install optimus is to use Hadley Wickham's 
@@ -42,15 +34,23 @@ then call
     library(devtools)
 	devtools::install_github("mitchest/optimus")
 
-Once I stop requently making changes I will put optimus on CRAN.
+Once I stop frequently making changes I will put optimus on CRAN.
 
 I have not yet figured out how to host binary packages for optimus.
 If you have the correct devtools and compilers on your system,
-then you can compile the package yourself from source (on github).  
+then you can compile the package yourself from source (on github). 
+
+### Development
+
+This package has just come out of 'official' development, but 
+functionality will continue to be refined and added. This is also 
+the first package I have written for public access, so there will
+inevitably be bugs and issues. If you find them, please let me know
+about them - either directly on github, or the contact details below. 
 
 ## How to use optimus?
 The vignette probably won't compile when installing from github,
-so check it out [the tutorial here](https://rawgit.com/mitchest/optimus/master/optimus-workflow.html).  
+so check out [the tutorial here](https://rawgit.com/mitchest/optimus/master/optimus-workflow.html).  
 	
 ### Contact
 

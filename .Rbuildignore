@@ -4,3 +4,4 @@
 ^\.travis\.yml$
 ^\.licence\.md$
 ^optimus-workflow\.html$
+^cran-comments\.md$
