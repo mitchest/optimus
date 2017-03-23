@@ -44,7 +44,7 @@ manyclm_sum <- function(responses, clusters) {
 # rank variable coefficients
 sort_char_coef <- function(x, coefs) {
   dat <- stats::setNames(as.numeric(coefs[x, ]), names(coefs[x, ]))
-  sorted_coefs <- sort(dat[dat >= 0], decreasing = TRUE)
+  sorted_coefs <- sort(dat[dat > 0], decreasing = TRUE)
   data.frame(variables = names(sorted_coefs),
              coef_value = sorted_coefs,
              stringsAsFactors = FALSE)
