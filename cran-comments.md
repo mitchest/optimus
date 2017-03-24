@@ -6,10 +6,10 @@
 
 ## R CMD check results
 
-0 ERRORS | 0 WARNINGS | 0 NOTES
+0 ERRORS | 0 WARNINGS | 1 NOTES
 
 
-* This is a new release, so the new package NOTE came up on the CRAN win-builder R CMD check
+* This is a new release, so the NOTE is the new package NOTE
 
 ## Reverse dependencies
 
