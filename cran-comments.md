@@ -9,17 +9,10 @@
 0 ERRORS | 0 WARNINGS | 0 NOTES
 
 
-* This is a new release, so there was 1 NOTE on the CRAN win-builder R CMD check
+* This is a new release, so the new package NOTE came up on the CRAN win-builder R CMD check
 
 ## Reverse dependencies
 
 This is a new release, so there are no reverse dependencies.
 
 ---
-
-* I have run R CMD check on the NUMBER downstream dependencies.
-  (Summary at ...). 
-  
-* FAILURE SUMMARY
-
-* All revdep maintainers were notified of the release on RELEASE DATE.
