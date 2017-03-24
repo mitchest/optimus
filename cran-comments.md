@@ -1,3 +1,7 @@
+## Resubmission
+This is a resubmission:
+* I have removed the LICENCE file after mistakingly included it
+
 ## Test environments
 * local OSX install, R 3.3.3
 * local Windows install, R 3.3.3
