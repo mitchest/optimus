@@ -29,4 +29,3 @@ S3 \code{\link{points}} method for sum-of-AIC reuslts from \code{\link[optimus]{
 \author{
 Mitchell Lyons
 }
-

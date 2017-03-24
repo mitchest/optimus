@@ -28,4 +28,3 @@ S3 \code{\link{plot}} method for sum-of-AIC reuslts from \code{\link[optimus]{fi
 \author{
 Mitchell Lyons
 }
-

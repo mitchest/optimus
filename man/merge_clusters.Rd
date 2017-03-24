@@ -79,17 +79,16 @@ points(optimal_hclust, col = "red", pch = 16)
 }
 
 }
-\author{
-Mitchell Lyons
-}
 \references{
 Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 }
 \seealso{
 \code{\link[optimus]{find_optimal}}, \code{\link[optimus]{get_characteristic}}, S3 print function for 'daic' class, S3 residual plotting function
 }
+\author{
+Mitchell Lyons
+}
 \keyword{iterative,}
 \keyword{merging,}
 \keyword{pairwise}
 \keyword{reallocation,}
-

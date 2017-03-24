@@ -99,16 +99,15 @@ plot(swamps_kmeans_aics)
 ## ============================================================
 
 }
-\author{
-Mitchell Lyons
-}
 \references{
 Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 }
 \seealso{
 \code{\link[optimus]{plot.aicsums}}, \code{\link[optimus]{get_characteristic}}, \code{\link[optimus]{merge_clusters}}, S3 for residual plots (at some stage)
 }
+\author{
+Mitchell Lyons
+}
 \keyword{optimal,}
 \keyword{partition,}
 \keyword{partitioning}
-

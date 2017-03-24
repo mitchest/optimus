@@ -83,16 +83,15 @@ head(swamps_char, 10)
 ## ============================================================
 
 }
-\author{
-Mitchell Lyons
-}
 \references{
 Lyons et al. 2016. Model-based assessment of ecological community classifications. \emph{Journal of Vegetation Science}, \strong{27 (4)}: 704--715.
 }
 \seealso{
 \code{\link[optimus]{find_optimal}}, S3 for print 'top-n' variables for each cluster, S3 for residual plots (at some stage)
 }
+\author{
+Mitchell Lyons
+}
 \keyword{characteristic,}
 \keyword{diagnostic,}
 \keyword{indicator}
-

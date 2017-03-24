@@ -12,7 +12,6 @@
 swamps
 }
 \description{
-The Upland Heath Swamps Plot Network Vegetation Structure and Floristics Data Package contains information on the vegetation structure and species present in 60 established swamp monitoring sites in upland swamps scattered throughout the study area (Keith and Myerscough 1993). Each site is sampled in nine combinations of moisture-by-vegetation structure strata. The Upland Heath Swamps Plot Network research plots commenced in 1983 and have been revisited in 2004, 2009 and again in 2014. More detail can be found at \url{http://www.ltern.org.au/index.php/ltern-plot-networks/upland-health-swamps}.
+The Upland Heath Swamps Plot Network Vegetation Structure and Floristics Data Package contains information on the vegetation structure and species present in 60 established swamp monitoring sites in upland swamps scattered throughout the study area (Keith and Myerscough 1993). Each site is sampled in nine combinations of moisture-by-vegetation structure strata. The Upland Heath Swamps Plot Network research plots commenced in 1983 and have been revisited in 2004, 2009 and again in 2014. More detail can be found at \url{http://www.ltern.org.au/ltern-plot-networks/upland-heath-swamps}.
 }
 \keyword{datasets}
-
