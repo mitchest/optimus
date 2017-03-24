@@ -57,9 +57,11 @@
 #' swamps_hclust <- hclust(d = dist(x = log1p(swamps), method = "canberra"),
 #'                        method = "complete")
 #'
-#' ## calculate sum-of-AIC values for 2:40 clusters, using the hclust() output
+#' ## calculate sum-of-AIC values for 10:25 clusters, using the hclust() output
 #' swamps_hclust_aics <- find_optimal(data = swamps, clustering = swamps_hclust,
-#' family = "poisson", cutreeLevels = 2:40)
+#' family = "poisson", cutreeLevels = 10:25)
+#'
+#' ## Looks like ~20 clusters is where predictive performance levels off
 #'
 #' ## Note here that the data passed to find_optimal() was actually NOT the
 #' ## data used for clustering (transform/distance), rather it was the
