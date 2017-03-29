@@ -28,10 +28,11 @@ In R, simply use
 
 See the package page on CRAN for more details:  
 https://cran.r-project.org/package=optimus  
-
+  
+### Development version
 If you want to install the development version of optimus,
 for example if I've added something new that you want to use,
-but it's not yet up on CRAN, then yo ucan also install directly
+but it's not yet up on CRAN, then you can also install directly
 from github. It's very easy - simply use Hadley Wickham's 
 (excellent) **devtools** package - install **devtools** from
  CRAN within R using
