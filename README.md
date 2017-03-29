@@ -22,10 +22,19 @@ can be found in Lyons et al. (2016).
 
 ## Installation
 
-The best way to install optimus is to use Hadley Wickham's 
-(excellent) **devtools** package - it's easy as to install optimus 
-within the R environment, directly from github. Simply install 
-**devtools** from CRAN with
+In R, simply use
+
+    install.packages("optimus")
+
+See the package page on CRAN for more details:  
+https://cran.r-project.org/package=optimus  
+
+If you want to install the development version of optimus,
+for example if I've added something new that you want to use,
+but it's not yet up on CRAN, then yo ucan also install directly
+from github. It's very easy - simply use Hadley Wickham's 
+(excellent) **devtools** package - install **devtools** from
+ CRAN within R using
 
     install.packages("devtools")
 
@@ -34,23 +43,15 @@ then call
     library(devtools)
 	devtools::install_github("mitchest/optimus")
 
-Once I stop frequently making changes I will put optimus on CRAN.
+### Bugs
 
-I have not yet figured out how to host binary packages for optimus.
-If you have the correct devtools and compilers on your system,
-then you can compile the package yourself from source (on github). 
-
-### Development
-
-This package has just come out of 'official' development, but 
-functionality will continue to be refined and added. This is also 
-the first package I have written for public access, so there will
-inevitably be bugs and issues. If you find them, please let me know
+There are some probably. If you find them, please let me know
 about them - either directly on github, or the contact details below. 
 
 ## How to use optimus?
-The vignette probably won't compile when installing from github,
-so check out [the tutorial here](https://rawgit.com/mitchest/optimus/master/optimus-workflow.html).  
+You can find the vignette on the CRAN home page, or you can access it
+here too (might be new things here before CRAN occasionally).  
+Check out [the tutorial here](https://rawgit.com/mitchest/optimus/master/optimus-workflow.html).  
 	
 ### Contact
 
