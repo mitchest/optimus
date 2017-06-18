@@ -1,6 +1,6 @@
 optimus
 ===========
-[![](http://cranlogs.r-pkg.org/badges/grand-total/optimus)](http://cran.rstudio.com/web/packages/optimus/index.html)  
+[![](http://cranlogs.r-pkg.org/badges/optimus)](http://cran.rstudio.com/web/packages/optimus/index.html)  
 [![Build Status](https://travis-ci.org/mitchest/optimus.svg?branch=master)](https://travis-ci.org/mitchest/optimus)  
 
 ## What is optimus??
