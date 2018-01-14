@@ -104,6 +104,11 @@ get_characteristic <- function(data, clustering, family, type="per.cluster", sig
     }
   }
 
+  # test char spec types
+  if (!type %in% c("global", "per.cluster")) {
+    stop("type= argument should be either 'per.cluster' or 'global'")
+  }
+
   # as.character, to be safe
   cluster_labels <- as.character(clustering)
 
