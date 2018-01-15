@@ -1,6 +1,6 @@
 ##' @title Plot sum-of-AIC results
 ##'
-##' @description S3 \code{\link{plot}} method for sum-of-AIC reuslts from \code{\link[optimus]{find_optimal}}.
+##' @description S3 \code{\link{plot}} method for sum-of-AIC results from \code{\link[optimus]{find_optimal}}.
 ##'
 ##' @param x an object of class \code{aicsums}, as produced by \code{\link[optimus]{find_optimal}}.
 ##' @param col point colour
@@ -31,7 +31,7 @@ plot.aicsums <- function(x, col = "black", pch = 16, ...) {
 
 ##' @title Plot more sum-of-AIC results
 ##'
-##' @description S3 \code{\link{points}} method for sum-of-AIC reuslts from \code{\link[optimus]{find_optimal}}. Implemented to compare multiple outputs from \code{\link[optimus]{find_optimal}}.
+##' @description S3 \code{\link{points}} method for sum-of-AIC results from \code{\link[optimus]{find_optimal}}. Implemented to compare multiple outputs from \code{\link[optimus]{find_optimal}}.
 ##'
 ##' @param x an object of class \code{aicsums}, as produced by \code{\link[optimus]{find_optimal}}.
 ##' @param col point colour - random if not specified

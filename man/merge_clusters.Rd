@@ -8,9 +8,9 @@ merge_clusters(data, clustering, family, n.iter = NULL, K = 1,
   quietly = FALSE)
 }
 \arguments{
-\item{data}{a data frame (or object that can be coerced by \code{\link[base]{as.data.frame}} containing the "raw" multivariate data. This is not necessarily the data used by the clustering algorithm - it is the data on which you are testing the predictive ablity of the clustering solution.}
+\item{data}{a data frame (or object that can be coerced by \code{\link[base]{as.data.frame}} containing the "raw" multivariate data. This is not necessarily the data used by the clustering algorithm - it is the data on which you are testing the predictive ability of the clustering solution.}
 
-\item{clustering}{an initial clustering solution (to be interatively merged) for \code{data}, that is, a vector of cluster labels (that can be coerced by \code{\link[base]{as.factor}}). The number of cluster labels must match the number of rows of the object supplied in the \code{data} argument. The solution could for example come form a call to \code{\link[stats]{cutree}}, see Examples}
+\item{clustering}{an initial clustering solution (to be iteratively merged) for \code{data}, that is, a vector of cluster labels (that can be coerced by \code{\link[base]{as.factor}}). The number of cluster labels must match the number of rows of the object supplied in the \code{data} argument. The solution could for example come form a call to \code{\link[stats]{cutree}}, see Examples}
 
 \item{family}{a character string denoting the error distribution to be used for model fitting. The options are similar to those in \code{\link[stats]{family}}, but are more limited - see Details.}
 
@@ -34,18 +34,18 @@ Attributes for the data frame are:
 \code{merge_clusters} takes a clustering solution, generates all possible pairwise combinations of clusters, fits models to each combination, and merges the pair with the lowest delta AIC. The process is repeated iteratively
 }
 \details{
-\code{merge_clusters} is built on the premise that a \emph{good} clustering solution (i.e. a classification) should provide information about the composition and abundance of the multivariate data it is classifying. A natural way to formalize this is with a predictive model, where group membership (clusters) is the predictor, and the multivariate data (site by variables matrix) is the response. \code{merge_clusters} fits linear models to each pariwise combination of a given set of clusters, and calculates their delta sum-of-AIC (that is, to the corresponding null model). The smallest delta AIC is taken to be the cluster pair that is \emph{most} similar, so it is merged, and the process is repeated. Lyons et al. (2016) provides background, a detailed description of the methodology, and application of delta AIC on both real and simulated ecological multivariate abundance data.
+\code{merge_clusters} is built on the premise that a \emph{good} clustering solution (i.e. a classification) should provide information about the composition and abundance of the multivariate data it is classifying. A natural way to formalize this is with a predictive model, where group membership (clusters) is the predictor, and the multivariate data (site by variables matrix) is the response. \code{merge_clusters} fits linear models to each pairwise combination of a given set of clusters, and calculates their delta sum-of-AIC (that is, to the corresponding null model). The smallest delta AIC is taken to be the cluster pair that is \emph{most} similar, so it is merged, and the process is repeated. Lyons et al. (2016) provides background, a detailed description of the methodology, and application of delta AIC on both real and simulated ecological multivariate abundance data.
 
 At present, \code{merge_clusters} supports the following error distributions for model fitting:
 \itemize{
   \item Gaussian (LM)
   \item Negative Binomial (GLM with log link)
   \item Poisson (GLM with log link)
-  \item Binomial (GLM with cloglog link for binary daya, logit link otherwise)
+  \item Binomial (GLM with cloglog link for binary data, logit link otherwise)
   \item Ordinal (Proportional odds model with logit link)
 }
 
-Gaussian LMs should be used for 'normal' data. Negative Binomial and Poisson GLMs shold be used for count data. Binomial GLMs should be used for binary and presence/absence data (when \code{K=1}), or trials data (e.g. frequency scores). If Binomial regression is being used with \code{K>1}, then \code{data} should be numerical values between 0 and 1, interpreted as the proportion of successful cases, where the total number of cases is given by \code{K} (see Details in \code{\link[stats]{family}}). Ordinal regression should be used for ordinal data, for example, cover-abundance scores. For ordinal regression, data should be supplied as either 1) factors, with the appropriate ordinal level order specified (see \code{\link[base]{levels}}) or 2) numeric, which will be coerced into a factor with levels ordered in numerical order (e.g. cover-abundance/numeric response scores). LMs fit via \code{\link[mvabund]{manylm}}; GLMs fit via \code{\link[mvabund]{manyglm}}; proportional odds model fit via \code{\link[ordinal]{clm}}.
+Gaussian LMs should be used for 'normal' data. Negative Binomial and Poisson GLMs should be used for count data. Binomial GLMs should be used for binary and presence/absence data (when \code{K=1}), or trials data (e.g. frequency scores). If Binomial regression is being used with \code{K>1}, then \code{data} should be numerical values between 0 and 1, interpreted as the proportion of successful cases, where the total number of cases is given by \code{K} (see Details in \code{\link[stats]{family}}). Ordinal regression should be used for ordinal data, for example, cover-abundance scores. For ordinal regression, data should be supplied as either 1) factors, with the appropriate ordinal level order specified (see \code{\link[base]{levels}}) or 2) numeric, which will be coerced into a factor with levels ordered in numerical order (e.g. cover-abundance/numeric response scores). LMs fit via \code{\link[mvabund]{manylm}}; GLMs fit via \code{\link[mvabund]{manyglm}}; proportional odds model fit via \code{\link[ordinal]{clm}}.
 }
 \examples{
 

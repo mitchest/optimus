@@ -20,7 +20,7 @@
 Points drawn on the current plot
 }
 \description{
-S3 \code{\link{points}} method for sum-of-AIC reuslts from \code{\link[optimus]{find_optimal}}. Implemented to compare multiple outputs from \code{\link[optimus]{find_optimal}}.
+S3 \code{\link{points}} method for sum-of-AIC results from \code{\link[optimus]{find_optimal}}. Implemented to compare multiple outputs from \code{\link[optimus]{find_optimal}}.
 }
 \examples{
 

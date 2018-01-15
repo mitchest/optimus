@@ -5,3 +5,4 @@
 ^\.licence\.md$
 ^optimus-workflow\.html$
 ^cran-comments\.md$
+^revdep$

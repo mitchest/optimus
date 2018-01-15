@@ -19,7 +19,7 @@
 A plot is drawn on the current graphics device
 }
 \description{
-S3 \code{\link{plot}} method for sum-of-AIC reuslts from \code{\link[optimus]{find_optimal}}.
+S3 \code{\link{plot}} method for sum-of-AIC results from \code{\link[optimus]{find_optimal}}.
 }
 \examples{
 

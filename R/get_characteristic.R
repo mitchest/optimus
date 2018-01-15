@@ -1,15 +1,15 @@
-#' @title Determine the characteristic variables (e.g. species) of a clustering solution (e.g. classificaiton)
+#' @title Determine the characteristic variables (e.g. species) of a clustering solution (e.g. classification)
 #'
 #' @description \code{get_characteristic} takes a clustering solution, fits models based on the underlying multivariate data, and determines 'important' variables for the clustering solution. In Ecology, particularly vegetation science, this is the process of determining characteristic (or diagnostic/indicator) species of a classification.
 #'
-#' @param data a data frame (or object that can be coerced by \code{\link[base]{as.data.frame}} containing the "raw" multivariate data. This is not necessarily the data used by the clustering algorithm - it is the data on which you are testing the predictive ablity of the clustering solution.
+#' @param data a data frame (or object that can be coerced by \code{\link[base]{as.data.frame}} containing the "raw" multivariate data. This is not necessarily the data used by the clustering algorithm - it is the data on which you are testing the predictive ability of the clustering solution.
 #' @param clustering a clustering solution for \code{data}, that is, a vector of cluster labels (that can be coerced by \code{\link[base]{as.factor}}). The number of cluster labels must match the number of rows of the object supplied in the \code{data} argument. The solution could for example come form a call to \code{\link[stats]{cutree}}, see Examples
 #' @param family a character string denoting the error distribution to be used for model fitting. The options are similar to those in \code{\link[stats]{family}}, but are more limited - see Details.
 #' @param type a character string, one of \code{"per.cluster"} or \code{"global"}, denoting the type of characteristic variables (species). See Details.
 #' @param signif logical, denoting whether \emph{significance} should be returned also when \code{"type=per.cluster"}. Ignored if \code{"type=global"}. See Details. Minimal additional overhead is required if \code{TRUE}.
 #' @param K number of trials in binomial regression. By default, K=1 for presence-absence data (with cloglog link).
 #'
-#' @details \code{get_characteristic} is built on the premise that a \emph{good} clustering solution (i.e. a classification) should provide information about the composition and abundance of the multivariate data it is classifying. A natural way to formalize this is with a predictive model, where group membership (clusters) is the predictor, and the multivariate data (site by variables matrix) is the response. \code{get_characteristic} fits linear models to each variable. If \code{type = "per.cluster"} the coefficients corresponding to each level of the clustering solution for each variable are used to define the characteristic variables for each cluster level. If \code{type = "global"}, characteristic variables are determined (via delta AIC - larger values = more important) for the overall classification. If \code{signif = TRUE}, delta AIC (that is, to the corresponding null model) and the coefficient standard errors are also retuend with the per-cluster characteristic variables. We loosely define that the larger the coefficient (with larger delta AIC values and smaller standard errors guiding \emph{significance}), the \emph{more} characteristic that varaible (species) is. Lyons et al. (2016) provides background, a detailed description of the methodology, and application of delta AIC on both real and simulated ecological multivariate abundance data.
+#' @details \code{get_characteristic} is built on the premise that a \emph{good} clustering solution (i.e. a classification) should provide information about the composition and abundance of the multivariate data it is classifying. A natural way to formalize this is with a predictive model, where group membership (clusters) is the predictor, and the multivariate data (site by variables matrix) is the response. \code{get_characteristic} fits linear models to each variable. If \code{type = "per.cluster"} the coefficients corresponding to each level of the clustering solution for each variable are used to define the characteristic variables for each cluster level. If \code{type = "global"}, characteristic variables are determined (via delta AIC - larger values = more important) for the overall classification. If \code{signif = TRUE}, delta AIC (that is, to the corresponding null model) and the coefficient standard errors are also returned with the per-cluster characteristic variables. We loosely define that the larger the coefficient (with larger delta AIC values and smaller standard errors guiding \emph{significance}), the \emph{more} characteristic that variable (species) is. Lyons et al. (2016) provides background, a detailed description of the methodology, and application of delta AIC on both real and simulated ecological multivariate abundance data.
 #'
 #' At present, \code{get_characteristic} supports the following error distributions for model fitting:
 #' \itemize{
@@ -20,7 +20,7 @@
 #'   \item Ordinal (Proportional odds model with logit link)
 #' }
 #'
-#' Gaussian LMs should be used for 'normal' data. Negative Binomial and Poisson GLMs shold be used for count data. Binomial GLMs should be used for binary and presence/absence data (when \code{K=1}), or trials data (e.g. frequency scores). If Binomial regression is being used with \code{K>1}, then \code{data} should be numerical values between 0 and 1, interpreted as the proportion of successful cases, where the total number of cases is given by \code{K} (see Details in \code{\link[stats]{family}}). Ordinal regression should be used for ordinal data, for example, cover-abundance scores. For ordinal regression, data should be supplied as either 1) factors, with the appropriate ordinal level order specified (see \code{\link[base]{levels}}) or 2) numeric, which will be coerced into a factor with levels ordered in numerical order (e.g. cover-abundance/numeric response scores). LMs fit via \code{\link[mvabund]{manylm}}; GLMs fit via \code{\link[mvabund]{manyglm}}; proportional odds model fit via \code{\link[ordinal]{clm}}.
+#' Gaussian LMs should be used for 'normal' data. Negative Binomial and Poisson GLMs should be used for count data. Binomial GLMs should be used for binary and presence/absence data (when \code{K=1}), or trials data (e.g. frequency scores). If Binomial regression is being used with \code{K>1}, then \code{data} should be numerical values between 0 and 1, interpreted as the proportion of successful cases, where the total number of cases is given by \code{K} (see Details in \code{\link[stats]{family}}). Ordinal regression should be used for ordinal data, for example, cover-abundance scores. For ordinal regression, data should be supplied as either 1) factors, with the appropriate ordinal level order specified (see \code{\link[base]{levels}}) or 2) numeric, which will be coerced into a factor with levels ordered in numerical order (e.g. cover-abundance/numeric response scores). LMs fit via \code{\link[mvabund]{manylm}}; GLMs fit via \code{\link[mvabund]{manyglm}}; proportional odds model fit via \code{\link[ordinal]{clm}}.
 #'
 #' @return either a list of sorted characteristic variables for each cluster (of class \code{perclustchar}) or a data frame containing the delta AIC values for each variable (of class \code{globalchar}). If \code{signif=} is not \code{"none"}, then the corresponding significance metrics are appended.
 #'
@@ -28,7 +28,7 @@
 #'
 #' \describe{
 #'   \item{\code{family}}{ which error distribution was used for modelling, see Arguments}
-#'   \item{\code{type}}{the type of characteristic variables calcualted, see Arguments}
+#'   \item{\code{type}}{the type of characteristic variables calculated, see Arguments}
 #'   \item{\code{K}}{ number of cases for Binomial regression, see Arguments}
 #' }
 #'
@@ -48,7 +48,7 @@
 #' data(swamps) # see ?swamps
 #' swamps <- swamps[,-1]
 #'
-#' ## Find characteristic species in a classificaiton of the swamps data
+#' ## Find characteristic species in a classification of the swamps data
 #' ## ==================================================================
 #'
 #' ## perhaps not the best clustering option, but this is base R
@@ -115,7 +115,7 @@ get_characteristic <- function(data, clustering, family, type="per.cluster", sig
   # get nclusters
   nclusters <- length(unique(cluster_labels))
 
-  # fit models to calculate coefs for each varaible/cluster
+  # fit models to calculate coefs for each variable/cluster
   if (type == "per.cluster") {
     if (family == "gaussian") {
       cluster_coefs <- gaussian_char(clusterSolution = cluster_labels, data = data, nclusters = nclusters, type = type, signif = signif)
