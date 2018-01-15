@@ -2,7 +2,7 @@ Package: optimus
 Type: Package
 Title: Model Based Diagnostics for Multivariate Cluster Analysis
 Version: 0.2.0
-Date: 2018-01-15
+Date: 2018-01-16
 Authors@R: person("Mitchell", "Lyons", 
                   email = "mitchell.lyons@gmail.com",
                   role = c("aut", "cre"))
