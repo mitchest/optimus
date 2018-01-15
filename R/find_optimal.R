@@ -31,7 +31,7 @@
 #'   \item{\code{family}}{ which error distribution was used for modelling, see Arguments}
 #'   \item{\code{K}}{ number of cases for Binomial regression, see Arguments}
 #'   \item{\code{cutree}}{ whether \code{\link[stats]{cutree}} was used, see Arguments}
-#'   \item{\code{cutreeLevels}}{ number of paritioning levels specified, see Arguments}
+#'   \item{\code{cutreeLevels}}{ number of partitioning levels specified, see Arguments}
 #' }
 #'
 #' @author Mitchell Lyons
