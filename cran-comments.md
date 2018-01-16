@@ -1,7 +1,6 @@
 ## Resubmission
 This is a resubmission:  
 * Changed link in README.md to canonical form
-* Confirming errors in v0.1.0 due to changes in package testthat have been resolved
 
 ## Test environments
 * local OSX install, R 3.4.3
