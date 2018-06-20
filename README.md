@@ -62,4 +62,6 @@ Check out [the tutorial here](https://rawgit.com/mitchest/optimus/master/optimus
 	
 ### References
 
-Lyons et al. 2016. Model-based assessment of ecological community classifications. Journal of Vegetation Science: 27 (4) 704--715. DOI: http://dx.doi.org/10.1111/jvs.12400
+Lyons et al. 2016. Model-based assessment of ecological community classifications.  
+Journal of Vegetation Science: 27 (4) 704--715.  
+DOI: http://dx.doi.org/10.1111/jvs.12400
